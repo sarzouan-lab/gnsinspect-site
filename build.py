@@ -9,7 +9,7 @@ All page content lives in content.py (FR + EN). This file owns the layout,
 the quote form, schema.org JSON-LD, sitemap and robots. No dependencies.
 """
 import json, os, shutil, sys, datetime
-from content import SITE, PAGES
+from content import SITE, PAGES, CATEGORIES
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 DIST = os.path.join(ROOT, "dist")
@@ -26,7 +26,10 @@ SLUGS = {
 def url(lang, key):
     """Absolute path for a page. FR is the root language; EN lives under /en/."""
     base = "/" if lang == "fr" else "/en/"
-    return base if key == "index" else f"{base}{SLUGS[(key, lang)]}/"
+    if key == "index":
+        return base
+    slug = SLUGS.get((key, lang)) or next(p["slug"] for p in PAGES if p["key"] == key and p["lang"] == lang)
+    return f"{base}{slug}/"
 
 def abs_url(lang, slug):
     return SITE["domain"] + url(lang, slug)
@@ -82,7 +85,7 @@ def header(p):
     nav = [
         ("facades", t(lang, "Façades", "Façades")),
         ("stationnements", t(lang, "Stationnements", "Parking garages")),
-        ("services", t(lang, "Autres services", "Other services")),
+        ("services", t(lang, "Services d’ingénierie", "Engineering services")),
         ("contact", t(lang, "Contact", "Contact")),
     ]
     links = "".join(f'<a href="{url(lang, k)}">{label}</a>' for k, label in nav)
@@ -111,7 +114,8 @@ def quote_form(p, compact=False):
       <option value="facade">{t(lang,'Inspection de façades (Loi 122)','Façade inspection (Bill 122)')}</option>
       <option value="stationnement">{t(lang,'Inspection de stationnement étagé (Loi 122)','Parking garage inspection (Bill 122)')}</option>
       <option value="les-deux">{t(lang,'Les deux','Both')}</option>
-      <option value="autre">{t(lang,'Autre service d’ingénierie','Other engineering service')}</option>
+      {''.join(f'<option value="{c["key"]}">{c[lang]["title"]}</option>' for c in CATEGORIES)}
+      <option value="autre">{t(lang,'Autre / je ne sais pas','Other / not sure')}</option>
     </select>
     <label>{t(lang,'Adresse de l’immeuble','Building address')}</label>
     <input name="adresse" required placeholder="{t(lang,'ex. 2009 rue Sherbrooke Est, Montréal','e.g. 2009 Sherbrooke St E, Montréal')}">
@@ -142,9 +146,9 @@ def cred(lang):
 <div class="cred">
   <div class="seal">ing.<br>OIQ</div>
   <div>
-    <b>{SITE['engineer']}</b><br>
-    {t(lang, 'Ingénieur, membre de l’Ordre des ingénieurs du Québec', 'Professional engineer, member of the Ordre des ingénieurs du Québec')}<br>
-    <small>{t(lang, 'Signe et assume personnellement chaque rapport de vérification.', 'Personally signs and stands behind every verification report.')}</small>
+    <b>{t(lang, 'Une équipe d’ingénieurs membres de l’OIQ', 'A team of OIQ-licensed engineers')}</b><br>
+    {t(lang, 'Structure, enveloppe du bâtiment, mécanique et environnement sous un même toit.', 'Structural, building envelope, mechanical and environmental under one roof.')}<br>
+    <small>{t(lang, 'Chaque rapport est signé et scellé par un ingénieur qui en assume la responsabilité professionnelle.', 'Every report is signed and sealed by an engineer who takes professional responsibility for it.')}</small>
   </div>
 </div>"""
 
@@ -166,10 +170,10 @@ def footer(p):
     <a class="brand" href="{url(lang,'index')}" style="color:#fff"><img src="/assets/img/logo-icon.png" alt="" width="46" height="46"><span>GNS <b style="color:var(--yellow)">INSPECT</b></span></a>
     <p style="margin-top:12px">{t(lang, 'Firme d’ingénierie spécialisée dans la vérification des façades et des stationnements étagés exigée par le chapitre Bâtiment du Code de sécurité du Québec (Loi 122).', 'Engineering firm specialized in the façade and parking-structure verifications required by Chapter VIII of Québec’s Safety Code (Bill 122).')}</p>
   </div>
-  <div><h4>{t(lang,'Services','Services')}</h4><ul>
+  <div><h4><a href="{url(lang,'services')}">{t(lang,'Services','Services')}</a></h4><ul>
     <li><a href="{url(lang,'facades')}">{t(lang,'Inspection de façades','Façade inspection')}</a></li>
     <li><a href="{url(lang,'stationnements')}">{t(lang,'Inspection de stationnements','Parking garage inspection')}</a></li>
-    <li><a href="{url(lang,'services')}">{t(lang,'Autres services','Other services')}</a></li>
+    {''.join(f'<li><a href="{url(lang, c["key"])}">{c[lang]["title"].split(" · ")[0]}</a></li>' for c in CATEGORIES)}
   </ul></div>
   <div><h4>{t(lang,'Entreprise','Company')}</h4><ul>
     <li><a href="{url(lang,'contact')}">{t(lang,'Nous joindre','Contact')}</a></li>
@@ -244,6 +248,17 @@ def render_home(p):
   <div><span class="eyebrow">{c['why_eyebrow']}</span><h2>{c['why_h2']}</h2><ul class="checks">{why}</ul>{cred(lang)}</div>
 </div></section>
 
+{suite_section(lang)}
+
+<section class="soft"><div class="wrap">
+  <div class="cred" style="background:#0b3d5c">
+    <div class="seal" style="background:#fff;color:#0b3d5c;font-size:.7rem">Hydro-<br>Québec</div>
+    <div><b>{t(lang,'Partenaire Hydro-Québec','Hydro-Québec partner')}</b><br>
+    {t(lang,'Études d’efficacité énergétique subventionnées jusqu’à 60 000 $ et mesures financées en partie par Hydro-Québec, pour les bâtiments commerciaux et multilogements.','Energy-efficiency studies subsidized up to $60,000 and measures partly funded by Hydro-Québec, for commercial and multi-unit buildings.')}
+    &nbsp;<a href="{url(lang,'energie')}" style="color:var(--yellow);font-weight:700">{t(lang,'En savoir plus →','Learn more →')}</a></div>
+  </div>
+</div></section>
+
 <section><div class="wrap">
   <p style="text-align:center;color:var(--grey);font-weight:700;margin-bottom:18px">{c['partners']}</p>
   <div class="logos"><span>Banque Scotia</span><span>Banque Nationale</span><span>Banque Laurentienne</span><span>First National</span><span>CIBC</span></div>
@@ -292,7 +307,68 @@ def render_simple(p):
 </div></section>
 {cta_band(lang)}"""
 
-RENDER = {"home": render_home, "service": render_service, "simple": render_simple}
+def category_cards(lang):
+    return "".join(f"""
+    <div class="service"><h3>{c[lang]['title']}</h3><p>{c[lang]['card']}</p>
+      <a class="btn ghost" href="{url(lang, c['key'])}">{t(lang,'En savoir plus','Learn more')}</a></div>""" for c in CATEGORIES)
+
+def suite_section(lang):
+    return f"""
+<section><div class="wrap">
+  <span class="eyebrow">{t(lang,'Suite complète','Full suite')}</span>
+  <h2>{t(lang,'Tous les services d’ingénierie du bâtiment, une seule équipe','Every building engineering service, one team')}</h2>
+  <p style="max-width:70ch;color:var(--grey)">{t(lang,'Inspections, expertise, structure, mécanique du bâtiment, environnement et copropriété : nos ingénieurs vous suivent de l’inspection jusqu’à la surveillance des travaux.','Inspections, expertise, structural, building mechanical, environmental and condominium services: our engineers stay with you from inspection through construction oversight.')}</p>
+  <div class="grid-3" style="margin-top:28px">{category_cards(lang)}</div>
+</div></section>"""
+
+def render_hub(p):
+    lang, c = p["lang"], p["content"]
+    return f"""
+<section class="page-hero"><div class="wrap">
+  <div class="breadcrumb"><a href="{url(lang,'index')}">{t(lang,'Accueil','Home')}</a> › {c['crumb']}</div>
+  <h1>{c['h1']}</h1><p class="lead">{c['lead']}</p>
+  <div class="cta"><a class="btn" href="#devis">{t(lang,'Demander une soumission','Request a quote')}</a><a class="phone" href="tel:{SITE['phone_tel']}">{SITE['phone']}</a></div>
+</div></section>
+<section class="soft"><div class="wrap">
+  <span class="eyebrow">{t(lang,'Obligations Loi 122','Bill 122 obligations')}</span>
+  <h2>{t(lang,'Vérifications réglementaires','Regulatory verifications')}</h2>
+  <div class="grid-2" style="margin-top:24px">
+    <div class="service"><h3>{t(lang,'Inspection de façades','Façade inspection')}</h3><p>{t(lang,'Bâtiments de 5 étages et plus, tous les 5 ans.','Buildings of 5+ storeys, every 5 years.')}</p><a class="btn ghost" href="{url(lang,'facades')}">{t(lang,'Voir le service','See service')}</a></div>
+    <div class="service"><h3>{t(lang,'Inspection de stationnements étagés','Parking garage inspection')}</h3><p>{t(lang,'Vérification annuelle et approfondie quinquennale.','Annual check and five-year in-depth verification.')}</p><a class="btn ghost" href="{url(lang,'stationnements')}">{t(lang,'Voir le service','See service')}</a></div>
+  </div>
+</div></section>
+<section><div class="wrap">
+  <span class="eyebrow">{t(lang,'Services d’ingénierie','Engineering services')}</span>
+  <h2>{t(lang,'Sept domaines, une équipe','Seven practice areas, one team')}</h2>
+  <div class="grid-3" style="margin-top:24px">{category_cards(lang)}</div>
+  <div style="margin-top:36px">{cred(lang)}</div>
+</div></section>
+<section class="soft"><div class="wrap two-col"><div class="prose"><h2>{t(lang,'Une question? Un ingénieur vous répond.','A question? An engineer answers.')}</h2><p>{t(lang,'Décrivez votre situation; nous vous dirons en 24 h quel service s’applique et à quel prix.','Describe your situation; within 24 h we will tell you which service applies and at what price.')}</p></div><aside>{quote_form(p)}</aside></div></section>
+{cta_band(lang)}"""
+
+def render_category(p):
+    lang, c = p["lang"], p["content"]
+    items = "".join(f"<li><b>{a}</b>{b}</li>" for a, b in c["items"])
+    who = "".join(f"<li>{x}</li>" for x in c["for"])
+    others = "".join(f'<li><a href="{url(lang, k["key"])}">{k[lang]["title"]}</a></li>' for k in CATEGORIES if k["key"] != p["key"])
+    return f"""
+<section class="page-hero"><div class="wrap">
+  <div class="breadcrumb"><a href="{url(lang,'index')}">{t(lang,'Accueil','Home')}</a> › <a href="{url(lang,'services')}">{t(lang,'Services d’ingénierie','Engineering services')}</a> › {c['title']}</div>
+  <h1>{c['h1']}</h1><p class="lead">{c['lead']}</p>
+  <div class="cta"><a class="btn" href="#devis">{t(lang,'Demander une soumission','Request a quote')}</a><a class="phone" href="tel:{SITE['phone_tel']}">{SITE['phone']}</a></div>
+</div></section>
+<section><div class="wrap two-col">
+  <div class="prose">
+    <h2>{t(lang,'Pour qui','Who it is for')}</h2><ul class="checks">{who}</ul>
+    <h2>{t(lang,'Nos services','Our services')}</h2><ol class="steps">{items}</ol>
+    {cred(lang)}
+    <h2>{t(lang,'Autres domaines','Other practice areas')}</h2><ul>{others}</ul>
+  </div>
+  <aside class="sticky">{quote_form(p)}</aside>
+</div></section>
+{cta_band(lang)}"""
+
+RENDER = {"home": render_home, "service": render_service, "simple": render_simple, "hub": render_hub, "category": render_category}
 
 # ---------------------------------------------------------------- build
 def build():
