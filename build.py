@@ -253,8 +253,8 @@ def render_home(p):
 <section class="soft"><div class="wrap">
   <div class="cred" style="background:#0b3d5c">
     <div class="seal" style="background:#fff;color:#0b3d5c;font-size:.7rem">Hydro-<br>Québec</div>
-    <div><b>{t(lang,'Partenaire Hydro-Québec','Hydro-Québec partner')}</b><br>
-    {t(lang,'Études d’efficacité énergétique subventionnées jusqu’à 60 000 $ et mesures financées en partie par Hydro-Québec, pour les bâtiments commerciaux et multilogements.','Energy-efficiency studies subsidized up to $60,000 and measures partly funded by Hydro-Québec, for commercial and multi-unit buildings.')}
+    <div><b>{t(lang,'Partenaire du programme Solutions efficaces d’Hydro-Québec','Partner in Hydro-Québec’s Solutions efficaces program')}</b><br>
+    {t(lang,'Nous déposons vos demandes d’appui financier : étude d’ingénierie subventionnée jusqu’à 60 000 $ et mesures financées en partie, pour les bâtiments commerciaux et multilogements.','We file your financial-assistance applications: engineering study subsidized up to $60,000 and measures partly funded, for commercial and multi-unit buildings.')}
     &nbsp;<a href="{url(lang,'energie')}" style="color:var(--yellow);font-weight:700">{t(lang,'En savoir plus →','Learn more →')}</a></div>
   </div>
 </div></section>
