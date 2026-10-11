@@ -21,6 +21,7 @@ SLUGS = {
     ("stationnements", "fr"): "inspection-stationnements-loi-122", ("stationnements", "en"): "parking-garage-inspection-bill-122",
     ("services", "fr"): "services", ("services", "en"): "services",
     ("contact", "fr"): "contact", ("contact", "en"): "contact",
+    ("merci", "fr"): "merci", ("merci", "en"): "thank-you",
 }
 
 def url(lang, key):
@@ -53,6 +54,7 @@ def head(p):
 <title>{p['title']}</title>
 <meta name="description" content="{p['meta']}">
 <link rel="canonical" href="{abs_url(lang, p['key'])}">
+{'<meta name="robots" content="noindex">' if p.get("noindex") else ""}
 <link rel="alternate" hreflang="fr-CA" href="{abs_url('fr', p['key'])}">
 <link rel="alternate" hreflang="en-CA" href="{abs_url('en', p['key'])}">
 <link rel="alternate" hreflang="x-default" href="{abs_url('fr', p['key'])}">
@@ -104,11 +106,14 @@ def quote_form(p, compact=False):
 <div class="card" id="devis">
   <h3>{t(lang, 'Soumission en 24 h', 'Quote within 24 h')}</h3>
   <div class="sub">{t(lang, 'Prix fixe confirmé par écrit. Aucune obligation.', 'Fixed price confirmed in writing. No obligation.')}</div>
-  <form action="{f['action']}" method="POST">
-    <input type="hidden" name="_subject" value="{t(lang,'Nouvelle demande de soumission — gnsinspect.ca','New quote request — gnsinspect.ca')}">
-    <input type="hidden" name="_language" value="{lang}">
-    <input type="hidden" name="_page" value="{p['key']}">
-    <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off">
+  <form action="https://api.web3forms.com/submit" method="POST">
+    <input type="hidden" name="access_key" value="{f['web3forms_key']}">
+    <input type="hidden" name="subject" value="{t(lang,'Nouvelle demande de soumission — gnsinspect.ca','New quote request — gnsinspect.ca')}">
+    <input type="hidden" name="from_name" value="gnsinspect.ca">
+    <input type="hidden" name="redirect" value="{abs_url(lang,'merci')}">
+    <input type="hidden" name="langue" value="{lang}">
+    <input type="hidden" name="page" value="{p['key']}">
+    <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off">
     <label>{t(lang,'Service','Service')}</label>
     <select name="service" required>
       <option value="facade">{t(lang,'Inspection de façades (Loi 122)','Façade inspection (Bill 122)')}</option>
@@ -368,7 +373,14 @@ def render_category(p):
 </div></section>
 {cta_band(lang)}"""
 
-RENDER = {"home": render_home, "service": render_service, "simple": render_simple, "hub": render_hub, "category": render_category}
+def render_thanks(p):
+    lang, c = p["lang"], p["content"]
+    return f"""
+<section class="page-hero"><div class="wrap"><h1>{c['h1']}</h1><p class="lead">{c['lead']}</p>
+<div class="cta"><a class="btn" href="{url(lang,'index')}">{t(lang,'Retour à l’accueil','Back to home')}</a><a class="phone" href="tel:{SITE['phone_tel']}">{SITE['phone']}</a></div></div></section>
+<section><div class="wrap prose" style="max-width:720px">{c['body']}</div></section>"""
+
+RENDER = {"thanks": render_thanks, "home": render_home, "service": render_service, "simple": render_simple, "hub": render_hub, "category": render_category}
 
 # ---------------------------------------------------------------- build
 def build():
@@ -389,6 +401,8 @@ def build():
     sm = ['<?xml version="1.0" encoding="UTF-8"?>',
           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">']
     for loc, key in urls:
+        if key == "merci":
+            continue
         sm.append(f"<url><loc>{loc}</loc><lastmod>{TODAY}</lastmod>"
                   f'<xhtml:link rel="alternate" hreflang="fr-CA" href="{abs_url("fr", key)}"/>'
                   f'<xhtml:link rel="alternate" hreflang="en-CA" href="{abs_url("en", key)}"/></url>')

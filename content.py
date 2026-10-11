@@ -12,7 +12,8 @@ SITE = {
     "address": "970 Montée de Liesse, bureau 209, Montréal (Québec) H4T 1W7",
     # Form backend. Create a free Formspree form (formspree.io), set the
     # notification address to simon.a@gnsinspect.ca, and paste its endpoint here.
-    "form": {"action": "https://formspree.io/f/REPLACE_ME"},
+    # Web3Forms access key (web3forms.com, free, notifications to simon.a@gnsinspect.ca)
+    "form": {"web3forms_key": "REPLACE_WITH_WEB3FORMS_KEY"},
 }
 
 # ------------------------------------------------------------------ FR
@@ -257,6 +258,14 @@ EN_CONTACT_BODY = """
 
 # ------------------------------------------------------------------ pages
 PAGES = [
+    {"key": "merci", "lang": "fr", "type": "thanks", "noindex": True,
+     "title": "Demande reçue | GNS Inspect", "meta": "Votre demande de soumission a été reçue.",
+     "content": {"h1": "Demande reçue. Merci.", "lead": "Un ingénieur vous répondra dans les 24 heures ouvrables avec un prix fixe confirmé par écrit.",
+                 "body": "<p>Si votre situation est urgente (condition dangereuse, chute de matériaux, avis de la Ville ou de la RBQ), appelez-nous directement au <a href='tel:+15149652842'>514-965-2842</a>.</p><p>En attendant, rassemblez si possible : l’année de construction, le dernier rapport de vérification et le registre d’entretien de l’immeuble. Cela accélère la soumission.</p>"}},
+    {"key": "merci", "lang": "en", "type": "thanks", "noindex": True,
+     "title": "Request received | GNS Inspect", "meta": "Your quote request has been received.",
+     "content": {"h1": "Request received. Thank you.", "lead": "An engineer will get back to you within 24 business hours with a fixed price confirmed in writing.",
+                 "body": "<p>If your situation is urgent (dangerous condition, falling material, notice from the City or the RBQ), call us directly at <a href='tel:+15149652842'>514-965-2842</a>.</p><p>In the meantime, gather if you can: the year of construction, the last verification report and the building’s maintenance register. It speeds up the quote.</p>"}},
     {"key": "index", "lang": "fr", "type": "home",
      "title": "Inspection de façades et de stationnements Loi 122 à Montréal | GNS Inspect",
      "meta": "Firme d’ingénierie spécialisée dans les vérifications de façades (5 étages et +) et de stationnements étagés exigées par la Loi 122. Rapport signé par un ingénieur, soumission en 24 h.",
