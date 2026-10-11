@@ -13,7 +13,7 @@ SITE = {
     # Form backend. Create a free Formspree form (formspree.io), set the
     # notification address to simon.a@gnsinspect.ca, and paste its endpoint here.
     # Web3Forms access key (web3forms.com, free, notifications to simon.a@gnsinspect.ca)
-    "form": {"web3forms_key": "REPLACE_WITH_WEB3FORMS_KEY"},
+    "form": {"web3forms_key": "fc748eb5-2abf-4f55-82d2-b8bdfa08a531"},
 }
 
 # ------------------------------------------------------------------ FR
