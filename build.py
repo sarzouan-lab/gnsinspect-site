@@ -104,7 +104,9 @@ def header(p):
     nav = [
         ("facades", t(lang, "Façades", "Façades")),
         ("stationnements", t(lang, "Stationnements", "Parking garages")),
-        ("services", t(lang, "Services d’ingénierie", "Engineering services")),
+        ("analyse", t(lang, "Énergie", "Energy")),
+        ("tests", t(lang, "Tests", "Testing")),
+        ("services", t(lang, "Services", "Services")),
         ("contact", t(lang, "Contact", "Contact")),
     ]
     links = "".join(f'<a href="{url(lang, k)}">{label}</a>' for k, label in nav)
@@ -259,11 +261,12 @@ def render_home(p):
   </div>
   {quote_form(p)}
 </div></section>
+<a class="strip" href="{url(lang,'analyse')}"><div class="wrap"><b>{t(lang,'Bâtiment de 1 GWh et plus par année?','Building using 1 GWh or more a year?')}</b> {t(lang,'Analyse énergétique remboursée jusqu’à 60 000 $ par Hydro-Québec.','Energy analysis reimbursed up to $60,000 by Hydro-Québec.')} <span>{t(lang,'Voir si vous êtes admissible →','Check your eligibility →')}</span></div></a>
 
 <section><div class="wrap">
   <span class="eyebrow">{c['services_eyebrow']}</span>
   <h2>{c['services_h2']}</h2>
-  <div class="grid-2" style="margin-top:28px">{svc_cards}</div>
+  <div class="grid-3 lead-cards" style="margin-top:28px">{svc_cards}</div>
 </div></section>
 
 <section class="soft"><div class="wrap grid-2">
@@ -353,16 +356,17 @@ def render_hub(p):
   <div class="cta"><a class="btn" href="#devis">{t(lang,'Demander une soumission','Request a quote')}</a><a class="phone" href="tel:{SITE['phone_tel']}">{SITE['phone']}</a></div>
 </div></section>
 <section class="soft"><div class="wrap">
-  <span class="eyebrow">{t(lang,'Obligations Loi 122','Bill 122 obligations')}</span>
-  <h2>{t(lang,'Vérifications réglementaires','Regulatory verifications')}</h2>
-  <div class="grid-2" style="margin-top:24px">
+  <span class="eyebrow">{t(lang,'Nos services phares','Our lead services')}</span>
+  <h2>{t(lang,'Loi 122 et analyse énergétique','Bill 122 and energy analysis')}</h2>
+  <div class="grid-3 lead-cards" style="margin-top:24px">
     <div class="service"><h3>{t(lang,'Inspection de façades','Façade inspection')}</h3><p>{t(lang,'Bâtiments de 5 étages et plus, tous les 5 ans.','Buildings of 5+ storeys, every 5 years.')}</p><a class="btn ghost" href="{url(lang,'facades')}">{t(lang,'Voir le service','See service')}</a></div>
     <div class="service"><h3>{t(lang,'Inspection de stationnements étagés','Parking garage inspection')}</h3><p>{t(lang,'Vérification annuelle et approfondie quinquennale.','Annual check and five-year in-depth verification.')}</p><a class="btn ghost" href="{url(lang,'stationnements')}">{t(lang,'Voir le service','See service')}</a></div>
+    <div class="service"><h3>{t(lang,'Analyse énergétique','Energy analysis')}</h3><p>{t(lang,'Bâtiments de 1 GWh et plus : remboursée jusqu’à 60 000 $ par Hydro-Québec.','Buildings using 1 GWh or more: reimbursed up to $60,000 by Hydro-Québec.')}</p><a class="btn ghost" href="{url(lang,'analyse')}">{t(lang,'Voir le service','See service')}</a></div>
   </div>
 </div></section>
 <section><div class="wrap">
   <span class="eyebrow">{t(lang,'Services d’ingénierie','Engineering services')}</span>
-  <h2>{t(lang,'Sept domaines, une équipe','Seven practice areas, one team')}</h2>
+  <h2>{t(lang, f'{len(CATEGORIES)} domaines, une équipe', f'{len(CATEGORIES)} practice areas, one team')}</h2>
   <div class="grid-3" style="margin-top:24px">{category_cards(lang)}</div>
   <div style="margin-top:36px">{cred(lang)}</div>
 </div></section>

@@ -39,9 +39,9 @@ header.site .wrap { display: flex; align-items: center; justify-content: space-b
 .brand img { width: 46px; height: 46px; }
 .brand span b { color: var(--yellow-dark); }
 nav.main { display: flex; gap: 22px; align-items: center; }
-nav.main a { text-decoration: none; font-weight: 600; font-size: .95rem; }
+nav.main a { text-decoration: none; font-weight: 600; font-size: .95rem; white-space: nowrap; }
 nav.main a:hover { color: var(--yellow-dark); }
-.btn { display: inline-block; background: var(--yellow); color: var(--ink); font-weight: 800; padding: 12px 20px; border-radius: 8px; text-decoration: none; border: 2px solid var(--yellow); transition: .15s; }
+.btn { display: inline-block; white-space: nowrap; background: var(--yellow); color: var(--ink); font-weight: 800; padding: 12px 20px; border-radius: 8px; text-decoration: none; border: 2px solid var(--yellow); transition: .15s; }
 .btn:hover { background: var(--yellow-dark); border-color: var(--yellow-dark); }
 .btn.ghost { background: transparent; color: var(--ink); border-color: var(--ink); }
 .btn.ghost:hover { background: var(--ink); color: #fff; }
@@ -146,3 +146,10 @@ footer .legal { grid-column: 1 / -1; border-top: 1px solid #333; padding-top: 18
   footer .wrap { grid-template-columns: 1fr; }
   .hero { padding: 48px 0; }
 }
+
+/* Energy analysis strip under the homepage hero */
+a.strip { display: block; background: var(--yellow); color: var(--ink); text-decoration: none; padding: 14px 0; font-size: 1rem; }
+a.strip span { font-weight: 800; text-decoration: underline; white-space: nowrap; }
+a.strip:hover { background: var(--yellow-dark); }
+@media (max-width: 1100px) { nav.main { gap: 14px; } nav.main a { font-size: .88rem; } }
+.service .btn, form .btn { white-space: normal; }
