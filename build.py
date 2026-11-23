@@ -585,6 +585,8 @@ def build():
         "/about-us/ / 301\n/blog/* / 301\n/wp-content/* / 301\n/wp-admin/* / 301\n")
     # same for Apache (Doteasy cPanel)
     open(os.path.join(DIST, ".htaccess"), "w").write(
+        "DirectoryIndex index.html\n"
+        "RedirectMatch 301 ^/(wp-[^/]*\\.php|xmlrpc\\.php|index\\.php)$ /\n"
         "RewriteEngine On\nRewriteCond %{HTTPS} off\nRewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]\n"
         "Redirect 301 /our-services/ /services/\nRedirect 301 /contact-us/ /contact/\nRedirect 301 /about-us/ /\n"
         "RedirectMatch 301 ^/blog/.*$ /\nRedirectMatch 301 ^/wp-(content|admin|includes)/.*$ /\n"

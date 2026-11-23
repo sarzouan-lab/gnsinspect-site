@@ -1,0 +1,42 @@
+name: Deploy to gnsinspect.ca
+# Publishes the site to the Doteasy hosting account over FTP.
+# Runs on every push to main once the three FTP secrets exist; until then it skips.
+# Can also be started by hand: Actions > Deploy to gnsinspect.ca > Run workflow.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+concurrency:
+  group: production
+  cancel-in-progress: false
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      FTP_SERVER: ${{ secrets.FTP_SERVER }}
+    steps:
+      - name: Check that hosting credentials are configured
+        id: cfg
+        run: |
+          if [ -n "$FTP_SERVER" ]; then echo "ready=true" >> "$GITHUB_OUTPUT"; else echo "FTP secrets not set - nothing deployed."; fi
+      - uses: actions/checkout@v4
+        if: steps.cfg.outputs.ready == 'true'
+      - uses: actions/setup-python@v5
+        if: steps.cfg.outputs.ready == 'true'
+        with: { python-version: "3.12" }
+      - name: Build production site
+        if: steps.cfg.outputs.ready == 'true'
+        run: |
+          python3 build.py
+          test -f dist/index.html && test -f dist/en/index.html && test -f dist/sitemap.xml
+          ! grep -q 'content="noindex"' dist/index.html
+      - name: Upload changed files to Doteasy
+        if: steps.cfg.outputs.ready == 'true'
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          local-dir: ./dist/
+          server-dir: ./
