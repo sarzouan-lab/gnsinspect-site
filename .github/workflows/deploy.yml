@@ -30,23 +30,15 @@ jobs:
           python3 build.py
           test -f dist/index.html && test -f dist/en/index.html && test -f dist/sitemap.xml
           ! grep -q 'content="noindex"' dist/index.html
-      - name: Connection diagnostics
-        if: steps.cfg.outputs.ready == 'true'
-        continue-on-error: true
-        env:
-          U: ${{ secrets.FTP_USERNAME }}
-          P: ${{ secrets.FTP_PASSWORD }}
-        run: |
-          for h in 209.42.24.221 192.250.237.62 "$FTP_SERVER"; do
-            echo "== host candidate =="; getent hosts "$h" | awk '{print "ip " $1}' | head -1
-            curl -sS -v --connect-timeout 10 --max-time 30 --ssl-reqd -k --list-only --user "$U:$P" "ftp://$h/" 2>&1 | grep -vE '^\{|^\}|bytes data|^\* +(TLS|SSL|ALPN|CAfile|CApath)' | tail -22 || true
-          done
       - name: Upload changed files to Doteasy
         if: steps.cfg.outputs.ready == 'true'
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          # The site's own host name: ftp.gnsinspect.ca does not point at the hosting server.
-          server: gnsinspect.ca
+          # Doteasy hosting server, addressed by IP: the FTP port is not reachable through the
+          # domain name. Its certificate is issued to the host's own name, so the name check is
+          # relaxed; the connection is still encrypted.
+          server: 209.42.24.221
+          security: loose
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
