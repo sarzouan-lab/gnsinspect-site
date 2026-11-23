@@ -25,9 +25,9 @@ Free, global CDN, automatic HTTPS, redeploys on every push to `main`.
    - Deploy. You get a `*.pages.dev` preview URL. Check it.
 
 2. **Form backend**
-   - Create a form at formspree.io (free tier is enough), notification email
-     `simon.a@gnsinspect.ca`. Copy the endpoint (`https://formspree.io/f/xxxx`).
-   - Put it in `content.py` → `SITE["form"]["action"]`, commit, push.
+   - The quote form posts to Web3Forms (free, 250 submissions/month). The access
+     key is in `content.py` → `SITE["form"]["web3forms_key"]`; notifications go to
+     `simon.a@gnsinspect.ca`.
    - Submit a test from the preview URL and confirm the email arrives.
 
 3. **Point the domain** (in WHC → cPanel → Zone Editor, *not* by changing nameservers)
@@ -71,6 +71,17 @@ Free, global CDN, automatic HTTPS, redeploys on every push to `main`.
 
 ---
 
+## Preview on GitHub Pages
+
+Every push to `main` rebuilds a preview copy on the `gh-pages` branch, served at
+https://sarzouan-lab.github.io/gnsinspect-site/ . It is marked `noindex` and exists
+only for review; the form on it is live and sends to the same mailbox.
+
+One-time setting: GitHub → repo → Settings → Pages → Source "Deploy from a branch",
+branch `gh-pages`, folder `/ (root)`.
+
+Local equivalent: `PREVIEW_URL=https://sarzouan-lab.github.io/gnsinspect-site python3 build.py`
+
 ## Day-to-day editing
 
 - All copy lives in `content.py` (FR and EN side by side).
@@ -81,7 +92,7 @@ Free, global CDN, automatic HTTPS, redeploys on every push to `main`.
 
 ## Checklist before going live
 
-- [ ] Formspree endpoint set and test submission received at simon.a@gnsinspect.ca
+- [ ] Test submission from the live domain received at simon.a@gnsinspect.ca
 - [ ] Prices or "à partir de" wording confirmed in `content.py`
 - [ ] Google Business Profile claimed and pointing at https://gnsinspect.ca
 - [ ] GA4 tag added to `head()` in `build.py` (optional)

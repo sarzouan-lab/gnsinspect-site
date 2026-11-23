@@ -8,12 +8,19 @@ Usage:  python3 build.py            -> writes HTML into ./dist
 All page content lives in content.py (FR + EN). This file owns the layout,
 the quote form, schema.org JSON-LD, sitemap and robots. No dependencies.
 """
-import json, os, shutil, sys, datetime
+import json, os, shutil, sys, datetime, urllib.parse
 from content import SITE, PAGES, CATEGORIES
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 DIST = os.path.join(ROOT, "dist")
 TODAY = datetime.date.today().isoformat()
+
+# Preview builds (GitHub Pages): set PREVIEW_URL to the address the build is served
+# from, e.g. https://sarzouan-lab.github.io/gnsinspect-site . Links and assets then
+# carry that sub-path, every page is marked noindex, and canonicals keep pointing at
+# the production domain. Unset = production build for gnsinspect.ca.
+PREVIEW = os.environ.get("PREVIEW_URL", "").rstrip("/")
+PREFIX = urllib.parse.urlparse(PREVIEW).path.rstrip("/") if PREVIEW else ""
 
 # ---------------------------------------------------------------- helpers
 SLUGS = {
@@ -24,16 +31,25 @@ SLUGS = {
     ("merci", "fr"): "merci", ("merci", "en"): "thank-you",
 }
 
-def url(lang, key):
-    """Absolute path for a page. FR is the root language; EN lives under /en/."""
+def path(lang, key):
+    """Site-relative path for a page. FR is the root language; EN lives under /en/."""
     base = "/" if lang == "fr" else "/en/"
     if key == "index":
         return base
     slug = SLUGS.get((key, lang)) or next(p["slug"] for p in PAGES if p["key"] == key and p["lang"] == lang)
     return f"{base}{slug}/"
 
-def abs_url(lang, slug):
-    return SITE["domain"] + url(lang, slug)
+def url(lang, key):
+    """Link target as written in the HTML (carries the preview sub-path, if any)."""
+    return PREFIX + path(lang, key)
+
+def abs_url(lang, key):
+    """Canonical production URL."""
+    return SITE["domain"] + path(lang, key)
+
+def served_url(lang, key):
+    """URL on the host this build is actually served from (form redirect)."""
+    return (PREVIEW or SITE["domain"]) + path(lang, key)
 
 def page_by(key, lang):
     return next(p for p in PAGES if p["key"] == key and p["lang"] == lang)
@@ -54,7 +70,7 @@ def head(p):
 <title>{p['title']}</title>
 <meta name="description" content="{p['meta']}">
 <link rel="canonical" href="{abs_url(lang, p['key'])}">
-{'<meta name="robots" content="noindex">' if p.get("noindex") else ""}
+{'<meta name="robots" content="noindex">' if (p.get("noindex") or PREVIEW) else ""}
 <link rel="alternate" hreflang="fr-CA" href="{abs_url('fr', p['key'])}">
 <link rel="alternate" hreflang="en-CA" href="{abs_url('en', p['key'])}">
 <link rel="alternate" hreflang="x-default" href="{abs_url('fr', p['key'])}">
@@ -64,11 +80,11 @@ def head(p):
 <meta property="og:url" content="{abs_url(lang, p['key'])}">
 <meta property="og:image" content="{SITE['domain']}/assets/img/icon-512.png">
 <meta property="og:locale" content="{'fr_CA' if lang=='fr' else 'en_CA'}">
-<link rel="icon" href="/assets/img/favicon-48.png" sizes="48x48">
-<link rel="apple-touch-icon" href="/assets/img/icon-192.png">
+<link rel="icon" href="{PREFIX}/assets/img/favicon-48.png" sizes="48x48">
+<link rel="apple-touch-icon" href="{PREFIX}/assets/img/icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/style.css">
+<link rel="stylesheet" href="{PREFIX}/assets/style.css">
 <script type="application/ld+json">{ld}</script>
 </head>
 <body>"""
@@ -93,7 +109,7 @@ def header(p):
     links = "".join(f'<a href="{url(lang, k)}">{label}</a>' for k, label in nav)
     return f"""
 <header class="site"><div class="wrap">
-  <a class="brand" href="{url(lang,'index')}"><img src="/assets/img/logo-icon.png" alt="GNS Inspect" width="46" height="46"><span>GNS <b>INSPECT</b></span></a>
+  <a class="brand" href="{url(lang,'index')}"><img src="{PREFIX}/assets/img/logo-icon.png" alt="GNS Inspect" width="46" height="46"><span>GNS <b>INSPECT</b></span></a>
   <button class="menu-toggle" aria-label="Menu" onclick="document.querySelector('nav.main').classList.toggle('open')">☰</button>
   <nav class="main">{links}</nav>
   <a class="btn" href="#devis">{t(lang, 'Demander une soumission', 'Request a quote')}</a>
@@ -110,7 +126,7 @@ def quote_form(p, compact=False):
     <input type="hidden" name="access_key" value="{f['web3forms_key']}">
     <input type="hidden" name="subject" value="{t(lang,'Nouvelle demande de soumission — gnsinspect.ca','New quote request — gnsinspect.ca')}">
     <input type="hidden" name="from_name" value="gnsinspect.ca">
-    <input type="hidden" name="redirect" value="{abs_url(lang,'merci')}">
+    <input type="hidden" name="redirect" value="{served_url(lang,'merci')}">
     <input type="hidden" name="langue" value="{lang}">
     <input type="hidden" name="page" value="{p['key']}">
     <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off">
@@ -172,7 +188,7 @@ def footer(p):
     return f"""
 <footer><div class="wrap">
   <div>
-    <a class="brand" href="{url(lang,'index')}" style="color:#fff"><img src="/assets/img/logo-icon.png" alt="" width="46" height="46"><span>GNS <b style="color:var(--yellow)">INSPECT</b></span></a>
+    <a class="brand" href="{url(lang,'index')}" style="color:#fff"><img src="{PREFIX}/assets/img/logo-icon.png" alt="" width="46" height="46"><span>GNS <b style="color:var(--yellow)">INSPECT</b></span></a>
     <p style="margin-top:12px">{t(lang, 'Firme d’ingénierie spécialisée dans la vérification des façades et des stationnements étagés exigée par le chapitre Bâtiment du Code de sécurité du Québec (Loi 122).', 'Engineering firm specialized in the façade and parking-structure verifications required by Chapter VIII of Québec’s Safety Code (Bill 122).')}</p>
   </div>
   <div><h4><a href="{url(lang,'services')}">{t(lang,'Services','Services')}</a></h4><ul>
@@ -391,7 +407,7 @@ def build():
     urls = []
     for p in PAGES:
         html = head(p) + topbar(p) + header(p) + RENDER[p["type"]](p) + footer(p)
-        rel = url(p["lang"], p["key"]).lstrip("/")
+        rel = path(p["lang"], p["key"]).lstrip("/")
         out_dir = os.path.join(DIST, rel)
         os.makedirs(out_dir, exist_ok=True)
         with open(os.path.join(out_dir, "index.html"), "w", encoding="utf-8") as f:
@@ -408,7 +424,9 @@ def build():
                   f'<xhtml:link rel="alternate" hreflang="en-CA" href="{abs_url("en", key)}"/></url>')
     sm.append("</urlset>")
     open(os.path.join(DIST, "sitemap.xml"), "w").write("\n".join(sm))
-    open(os.path.join(DIST, "robots.txt"), "w").write(f"User-agent: *\nAllow: /\nSitemap: {SITE['domain']}/sitemap.xml\n")
+    open(os.path.join(DIST, "robots.txt"), "w").write(
+        "User-agent: *\nDisallow: /\n" if PREVIEW else f"User-agent: *\nAllow: /\nSitemap: {SITE['domain']}/sitemap.xml\n")
+    open(os.path.join(DIST, ".nojekyll"), "w").write("")
     # legacy WordPress URLs -> new pages (Netlify/Cloudflare _redirects format)
     open(os.path.join(DIST, "_redirects"), "w").write(
         "/our-services/* /services/ 301\n/our-services /services/ 301\n/contact-us/ /contact/ 301\n"
