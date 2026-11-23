@@ -3,13 +3,13 @@
 The site is static HTML. `python3 build.py` writes everything into `dist/`.
 There is no database, no PHP, no WordPress and nothing to patch.
 
-Current hosting (as of October 2026): **Web Hosting Canada (WHC)**, Montréal.
+Current hosting (confirmed November 2026): **Doteasy**, cPanel shared hosting.
 Nameservers `ns1–ns4.mysecurecloudhost.com`, server IP 209.42.24.221.
-DNS **and** email (`MX gnsinspect.ca`) are both handled by that WHC account,
-so do not move DNS away from WHC unless you also move the mailboxes.
+The website, DNS **and** email (`MX gnsinspect.ca`) are all on that Doteasy account,
+so do not move DNS away from Doteasy unless you also move the mailboxes.
 
 Two options. Option A is the recommended end state; Option B is the fastest
-"swap tonight" path and keeps everything at WHC.
+"swap tonight" path and keeps everything at Doteasy.
 
 ---
 
@@ -30,9 +30,9 @@ Free, global CDN, automatic HTTPS, redeploys on every push to `main`.
      `simon.a@gnsinspect.ca`.
    - Submit a test from the preview URL and confirm the email arrives.
 
-3. **Point the domain** (in WHC → cPanel → Zone Editor, *not* by changing nameservers)
+3. **Point the domain** (in Doteasy → cPanel → Zone Editor, *not* by changing nameservers)
    - Delete the existing `A` record for `gnsinspect.ca` (209.42.24.221).
-   - Add `CNAME  gnsinspect.ca  →  <project>.pages.dev` (WHC supports CNAME
+   - Add `CNAME  gnsinspect.ca  →  <project>.pages.dev` (Doteasy supports CNAME
      flattening at the apex; if it refuses, use the `A`/`AAAA` records
      Cloudflare shows under *Custom domains*).
    - Add `CNAME  www  →  <project>.pages.dev`.
@@ -47,18 +47,18 @@ Free, global CDN, automatic HTTPS, redeploys on every push to `main`.
 
 5. **Search Console**
    - search.google.com/search-console → add `gnsinspect.ca` (domain property,
-     verify with the TXT record WHC lets you add).
+     verify with the TXT record Doteasy lets you add).
    - Submit `https://gnsinspect.ca/sitemap.xml`.
    - Old WordPress URLs are 301-redirected by `_redirects`, so rankings carry over.
 
 ---
 
-## Option B — Stay on WHC, upload the files (fastest)
+## Option B — Stay on Doteasy, upload the files (fastest)
 
 1. Build locally: `python3 build.py` (any machine with Python 3; no packages needed).
    Or download `site.zip` from the latest GitHub Actions run (Actions → Build →
    artifact `site`).
-2. WHC → cPanel → **File Manager** → `public_html`.
+2. Doteasy → cPanel → **File Manager** → `public_html`.
 3. Rename the existing `public_html` to `public_html_wp_backup_2026-10`
    (one level up, in the home directory), then create a new empty `public_html`.
 4. Upload the **contents** of `dist/` (not the folder itself) into `public_html`.

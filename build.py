@@ -437,7 +437,7 @@ def build():
     open(os.path.join(DIST, "_redirects"), "w").write(
         "/our-services/* /services/ 301\n/our-services /services/ 301\n/contact-us/ /contact/ 301\n"
         "/about-us/ / 301\n/blog/* / 301\n/wp-content/* / 301\n/wp-admin/* / 301\n")
-    # same for Apache (WHC cPanel)
+    # same for Apache (Doteasy cPanel)
     open(os.path.join(DIST, ".htaccess"), "w").write(
         "RewriteEngine On\nRewriteCond %{HTTPS} off\nRewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]\n"
         "Redirect 301 /our-services/ /services/\nRedirect 301 /contact-us/ /contact/\nRedirect 301 /about-us/ /\n"
