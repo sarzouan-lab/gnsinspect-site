@@ -46,3 +46,18 @@ jobs:
             set net:timeout 30; set net:max-retries 3; set cmd:fail-exit true;
             mirror --reverse --verbose --parallel=4 --no-perms dist/ ./;
             cls -1a; quit"
+      - name: Check the live site
+        if: steps.cfg.outputs.ready == 'true'
+        continue-on-error: true
+        run: |
+          for h in gnsinspect.ca www.gnsinspect.ca; do echo "$h -> $(getent hosts $h | awk '{print $1}' | tr '\n' ' ')"; done
+          echo "== public DNS =="
+          curl -sS -m 20 -o /tmp/live.html -w "status %{http_code} ip %{remote_ip} final %{url_effective}\n" -L https://gnsinspect.ca/ || true
+          grep -o '<title>[^<]*</title>' /tmp/live.html | head -1 || true
+          grep -c 'wp-content' /tmp/live.html || true
+          curl -sS -m 20 -o /dev/null -w "facades page status %{http_code}\n" -L https://gnsinspect.ca/inspection-facades-loi-122/ || true
+          echo "== hosting server 209.42.24.221 directly =="
+          curl -sS -m 20 -k -o /tmp/direct.html -w "status %{http_code}\n" --resolve gnsinspect.ca:443:209.42.24.221 https://gnsinspect.ca/ || true
+          grep -o '<title>[^<]*</title>' /tmp/direct.html | head -1 || true
+          curl -sS -m 20 -k -o /dev/null -w "facades page status %{http_code}\n" --resolve gnsinspect.ca:443:209.42.24.221 https://gnsinspect.ca/inspection-facades-loi-122/ || true
+          curl -sS -m 20 -k -o /dev/null -w "deploy subfolder status %{http_code}\n" --resolve gnsinspect.ca:443:209.42.24.221 https://gnsinspect.ca/deploy/ || true
