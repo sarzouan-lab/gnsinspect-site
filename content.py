@@ -13,6 +13,9 @@ SITE = {
     # Form backend. Create a free Formspree form (formspree.io), set the
     # notification address to simon.a@gnsinspect.ca, and paste its endpoint here.
     # Web3Forms access key (web3forms.com, free, notifications to simon.a@gnsinspect.ca)
+    # Client testimonials shown on the homepage. Real, approved quotes only:
+    # {"quote_fr": "...", "quote_en": "...", "name": "Prénom N.", "role_fr": "Gestionnaire, 120 logements", "role_en": "Manager, 120 units"}
+    "testimonials": [],
     "form": {"web3forms_key": "fc748eb5-2abf-4f55-82d2-b8bdfa08a531"},
 }
 
@@ -77,7 +80,8 @@ FR_FACADES = {
     "why": ["Rapport signé par un ingénieur en structure et en enveloppe du bâtiment, pas seulement un inspecteur.",
             "Délai de livraison : 10 jours ouvrables après la visite.",
             "Prix fixe par façade, confirmé par écrit avant la visite.",
-            "Recommandations priorisées et chiffrées, utilisables directement pour votre fonds de prévoyance."],
+            "Recommandations priorisées et chiffrées, utilisables directement pour votre fonds de prévoyance.",
+            "Rappel écrit six mois avant votre prochaine échéance de vérification : vous ne ratez plus une date."],
 }
 FR_FACADES_FAQ = [
     ("Mon immeuble a 4 étages plus un sous-sol : suis-je visé?", "Non. Le critère est 5 étages hors sol. Un sous-sol ou un garage souterrain ne compte pas comme étage hors sol."),
@@ -109,7 +113,8 @@ FR_STAT = {
     "why": ["Ingénieur en structure membre de l’OIQ qui signe et assume le rapport.",
             "Intervention sans fermer le stationnement : relevés par sections, de nuit au besoin.",
             "Rapport livré en 10 jours ouvrables; devis de réparation et surveillance de chantier disponibles.",
-            "Prix fixe par niveau, confirmé par écrit."],
+            "Prix fixe par niveau, confirmé par écrit.",
+            "Rappel écrit six mois avant la prochaine vérification approfondie, et chaque année pour la vérification annuelle."],
 }
 FR_STAT_FAQ = [
     ("Mon stationnement est entièrement sur terre-plein : suis-je visé?", "Non, sauf si une portion de dalle est au-dessus d’un vide : rampe, entresol, mezzanine ou dalle sur pilotis."),
@@ -201,7 +206,8 @@ EN_FACADES = {
     "why": ["Report signed by a structural and building-envelope engineer, not just an inspector.",
             "Delivered within 10 business days of the site visit.",
             "Fixed price per elevation, confirmed in writing before the visit.",
-            "Prioritized, costed recommendations you can drop straight into your reserve fund plan."],
+            "Prioritized, costed recommendations you can drop straight into your reserve fund plan.",
+            "A written reminder six months before your next verification deadline, so you never miss a date."],
 }
 EN_FACADES_FAQ = [
     ("My building has 4 storeys plus a basement. Am I covered?", "No. The threshold is 5 storeys above grade. A basement or underground garage does not count as an above-grade storey."),
@@ -233,7 +239,8 @@ EN_STAT = {
     "why": ["OIQ-licensed structural engineer signs and stands behind the report.",
             "No garage closure: sections surveyed off-peak or overnight.",
             "Report in 10 business days; repair specifications and site oversight available.",
-            "Fixed price per level, confirmed in writing."],
+            "Fixed price per level, confirmed in writing.",
+            "A written reminder six months before the next in-depth verification, and every year for the annual check."],
 }
 EN_STAT_FAQ = [
     ("My garage is entirely slab-on-grade. Am I covered?", "No, unless part of a slab sits above a void: a ramp, mezzanine, split level or slab on columns."),
@@ -330,6 +337,135 @@ EN_ANALYSE_FAQ = [
     ("Does Hydro-Québec recommend GNS Inspect?", "No. GNS Inspect is a registered partner in the program, which lets us prepare and file applications on your behalf. Hydro-Québec does not recommend or mandate any partner."),
 ]
 
+# ------------------------------------------------------------------ MLI Select energy audit (CMHC)
+# Thresholds as published for MLI Select; confirm against CMHC before each file.
+FR_MLI = {
+    "crumb": "Audit énergétique APH Select",
+    "eyebrow": "SCHL · APH Select (MLI Select) · Immeubles multilogements",
+    "h1": "Audit énergétique APH Select : les points d’efficacité énergétique de votre financement SCHL",
+    "lead": "Le programme APH Select de la SCHL accorde des primes réduites et un amortissement jusqu’à 50 ans aux immeubles locatifs qui cumulent des points en efficacité énergétique, en abordabilité et en accessibilité. Nos ingénieurs réalisent l’inspection, la modélisation et le rapport d’audit énergétique que votre prêteur dépose à la SCHL.",
+    "who_h2": "Pour quels projets",
+    "who": ["Immeubles locatifs multilogements de grande taille, assujettis à la partie 3 du Code de construction.",
+            "Immeubles existants : acquisition, refinancement ou rénovation.",
+            "Constructions neuves : attestation de la performance par rapport au code de référence.",
+            "Propriétaires, promoteurs, investisseurs et courtiers hypothécaires qui montent un dossier SCHL."],
+    "callout": "<b>Les trois niveaux d’efficacité énergétique :</b> pour un immeuble existant, une réduction d’au moins 15 %, 25 % ou 40 % de la consommation par rapport à la situation de référence vaut 20, 35 ou 50 points. Pour une construction neuve, les niveaux sont de 20 %, 25 % et 40 % de mieux que le code de référence. Il faut au moins 50 points pour accéder au programme, et 100 points pour l’amortissement maximal.",
+    "includes_h2": "Ce que comprend notre audit",
+    "includes": [("Analyse préliminaire.", "Factures, plans et systèmes : nous estimons le niveau de points atteignable avant d’engager des frais."),
+                 ("Inspection énergétique sur place.", "Enveloppe, chauffage, ventilation, climatisation, eau chaude domestique, éclairage et contrôles."),
+                 ("Modélisation énergétique.", "Simulation de la situation de référence et des scénarios d’amélioration, selon les méthodes reconnues par la SCHL."),
+                 ("Scénarios chiffrés.", "Coût de chaque mesure, économies et points obtenus, pour choisir le niveau visé."),
+                 ("Rapport d’audit signé par un ingénieur.", "Le document que votre prêteur transmet à la SCHL."),
+                 ("Soutien pendant la révision.", "Réponses aux questions du prêteur et de la SCHL jusqu’à l’approbation.")],
+    "why_h2": "Pourquoi GNS Inspect",
+    "why": ["Des ingénieurs en mécanique, en enveloppe et en structure du bâtiment : l’audit et les plans des mesures sous un même toit.",
+            "Les mesures recommandées peuvent aussi être admissibles à un appui financier du programme Solutions efficaces d’Hydro-Québec, dont nous sommes partenaires.",
+            "Un rapport d’état d’immeuble pour le prêteur peut être produit lors de la même visite.",
+            "Prix fixe confirmé par écrit avant de commencer."],
+}
+FR_MLI_FAQ = [
+    ("L’audit énergétique est-il obligatoire pour APH Select?", "Il l’est dès que vous réclamez des points en efficacité énergétique. La SCHL exige un rapport énergétique et une simulation préparés par un professionnel reconnu, que votre prêteur dépose avec la demande."),
+    ("Un immeuble existant peut-il obtenir des points?", "Oui, en démontrant une réduction d’au moins 15 % de la consommation d’énergie par rapport à la situation de référence, grâce à des mesures réalisées ou prévues."),
+    ("Que change la date du 30 septembre 2026 pour les constructions neuves?", "Les dossiers de construction neuve déposés après cette date sont évalués par rapport aux codes de 2020, plus exigeants. Un même bâtiment obtient donc moins de points qu’auparavant; il vaut mieux valider le niveau visé dès la conception."),
+    ("Combien de temps faut-il?", "Quelques semaines dans la plupart des cas, selon la taille de l’immeuble et la disponibilité des plans et des factures."),
+    ("Puis-je combiner APH Select et les programmes d’Hydro-Québec?", "Oui. Ce sont des programmes distincts : APH Select porte sur le financement, Solutions efficaces sur le coût des mesures. Nous vérifions ce qui s’applique à votre immeuble."),
+]
+EN_MLI = {
+    "crumb": "MLI Select energy audit",
+    "eyebrow": "CMHC · MLI Select · Multi-unit rental buildings",
+    "h1": "MLI Select energy audit: the energy-efficiency points behind your CMHC financing",
+    "lead": "CMHC’s MLI Select program gives reduced premiums and amortization up to 50 years to rental buildings that earn points for energy efficiency, affordability and accessibility. Our engineers carry out the inspection, the energy model and the audit report your lender files with CMHC.",
+    "who_h2": "Which projects",
+    "who": ["Large multi-unit rental buildings governed by Part 3 of the Construction Code.",
+            "Existing buildings: acquisition, refinancing or renovation.",
+            "New construction: attestation of performance against the reference code.",
+            "Owners, developers, investors and mortgage brokers assembling a CMHC file."],
+    "callout": "<b>The three energy-efficiency levels:</b> for an existing building, a reduction of at least 15%, 25% or 40% in consumption against the baseline earns 20, 35 or 50 points. For new construction the levels are 20%, 25% and 40% better than the reference code. At least 50 points are needed to enter the program, and 100 points for the longest amortization.",
+    "includes_h2": "What our audit includes",
+    "includes": [("Preliminary review.", "Bills, drawings and systems: we estimate the achievable point level before you commit fees."),
+                 ("On-site energy inspection.", "Envelope, heating, ventilation, cooling, domestic hot water, lighting and controls."),
+                 ("Energy modelling.", "Simulation of the baseline and the improvement scenarios, using methods CMHC recognizes."),
+                 ("Costed scenarios.", "Cost of each measure, savings and points earned, so you can choose the level to target."),
+                 ("Engineer-signed audit report.", "The document your lender sends to CMHC."),
+                 ("Support through review.", "Answers to lender and CMHC questions until approval.")],
+    "why_h2": "Why GNS Inspect",
+    "why": ["Building mechanical, envelope and structural engineers: the audit and the drawings for the measures under one roof.",
+            "The recommended measures may also qualify for financial assistance under Hydro-Québec’s Solutions efficaces program, in which we are a partner.",
+            "A property condition report for the lender can be produced during the same visit.",
+            "Fixed price confirmed in writing before we start."],
+}
+EN_MLI_FAQ = [
+    ("Is the energy audit mandatory for MLI Select?", "It is as soon as you claim energy-efficiency points. CMHC requires an energy report and a simulation prepared by a recognized professional, which your lender files with the application."),
+    ("Can an existing building earn points?", "Yes, by demonstrating a reduction of at least 15% in energy consumption against the baseline, through measures completed or planned."),
+    ("What does September 30, 2026 change for new construction?", "New-construction files submitted after that date are assessed against the 2020 codes, which are more demanding. The same building therefore earns fewer points than before; it is worth validating the target level at design stage."),
+    ("How long does it take?", "A few weeks in most cases, depending on building size and the availability of drawings and bills."),
+    ("Can I combine MLI Select with Hydro-Québec programs?", "Yes. They are separate programs: MLI Select concerns financing, Solutions efficaces the cost of the measures. We check what applies to your building."),
+]
+
+# ------------------------------------------------------------------ Montréal By-law 21-042 (energy and GHG disclosure)
+FR_DIVULG = {
+    "crumb": "Divulgation énergie et GES",
+    "eyebrow": "Ville de Montréal · Règlement 21-042 · Grands bâtiments",
+    "h1": "Divulgation annuelle de la consommation d’énergie et des GES : nous la faisons pour vous",
+    "lead": "À Montréal, les propriétaires de bâtiments de 2 000 m² et plus, ou de 25 logements et plus, doivent déclarer chaque année à la Ville la consommation d’énergie de l’immeuble, au plus tard le 30 juin. Nous rassemblons les données, montons votre dossier dans ENERGY STAR Portfolio Manager et le transmettons dans les délais.",
+    "who_h2": "Qui est visé",
+    "who": ["Bâtiments commerciaux et institutionnels de 2 000 m² (21 528 pi²) et plus.",
+            "Immeubles résidentiels de 25 logements et plus.",
+            "La déclaration couvre la consommation mensuelle de tout le bâtiment, du 1er janvier au 31 décembre de l’année précédente.",
+            "Certains bâtiments à vocation industrielle sont exclus; nous vérifions votre situation."],
+    "callout": "<b>Une obligation qui revient chaque année.</b> La Ville compare les bâtiments entre eux et leur attribue une cote; des seuils de performance sont prévus dans le Plan climat. Une déclaration bien montée est aussi le point de départ d’une analyse énergétique remboursée par Hydro-Québec.",
+    "includes_h2": "Notre service, clés en main",
+    "includes": [("Vérification de l’assujettissement.", "Superficie, nombre de logements et usage : nous confirmons si votre bâtiment est visé."),
+                 ("Collecte des données.", "Transfert des données d’Hydro-Québec et d’Énergir, et des autres sources d’énergie, pour tous les compteurs de l’immeuble."),
+                 ("Dossier ENERGY STAR Portfolio Manager.", "Création ou mise à jour du profil du bâtiment, validation des superficies et des usages."),
+                 ("Contrôle de qualité par un ingénieur.", "Détection des compteurs manquants, des mois incomplets et des écarts anormaux avant l’envoi."),
+                 ("Transmission à la Ville avant le 30 juin.", "Avec confirmation écrite du dépôt."),
+                 ("Bilan annuel.", "Votre intensité énergétique, vos émissions et les pistes d’amélioration, sur une page.")],
+    "why_h2": "Pourquoi nous la confier",
+    "why": ["Vous n’avez plus à y penser : rappel chaque printemps, dépôt avant l’échéance.",
+            "Des ingénieurs lisent vos données, pas seulement un formulaire.",
+            "Si votre bâtiment consomme 1 GWh et plus par année, nous vérifions du même coup son admissibilité à l’analyse énergétique remboursée par Hydro-Québec.",
+            "Prix fixe annuel par bâtiment, tarif de portefeuille pour plusieurs immeubles."],
+}
+FR_DIVULG_FAQ = [
+    ("Mon immeuble de 30 logements est-il visé?", "Oui. Le règlement s’applique aux immeubles résidentiels de 25 logements et plus, ainsi qu’aux bâtiments de 2 000 m² et plus."),
+    ("Quelle est la date limite?", "Le 30 juin de chaque année, pour la consommation de l’année civile précédente."),
+    ("Je n’ai pas accès aux compteurs de mes locataires. Comment faire?", "La déclaration vise la consommation de tout le bâtiment. Les distributeurs d’énergie offrent un transfert de données agrégées; nous nous occupons de la demande."),
+    ("Que fait la Ville de ces données?", "Elle compare les bâtiments et leur attribue une cote d’émissions de GES. Des seuils de performance sont annoncés pour les prochaines années."),
+    ("Quel lien avec l’analyse énergétique d’Hydro-Québec?", "Les mêmes données servent à vérifier si votre bâtiment atteint 1 GWh par année, le seuil pour une analyse remboursée jusqu’à 60 000 $."),
+]
+EN_DIVULG = {
+    "crumb": "Energy and GHG disclosure",
+    "eyebrow": "City of Montréal · By-law 21-042 · Large buildings",
+    "h1": "Annual energy and GHG disclosure: we handle it for you",
+    "lead": "In Montréal, owners of buildings of 2,000 m² or more, or with 25 or more dwellings, must report the building’s energy consumption to the City every year by June 30. We gather the data, set up your file in ENERGY STAR Portfolio Manager and submit it on time.",
+    "who_h2": "Who is covered",
+    "who": ["Commercial and institutional buildings of 2,000 m² (21,528 sq ft) or more.",
+            "Residential buildings with 25 or more dwellings.",
+            "The report covers monthly consumption for the whole building, from January 1 to December 31 of the previous year.",
+            "Some industrial-use buildings are excluded; we check your situation."],
+    "callout": "<b>An obligation that comes back every year.</b> The City compares buildings and assigns each a rating; performance thresholds are planned under the Climate Plan. A well-built report is also the starting point for an energy analysis reimbursed by Hydro-Québec.",
+    "includes_h2": "Our turnkey service",
+    "includes": [("Applicability check.", "Floor area, number of dwellings and use: we confirm whether your building is covered."),
+                 ("Data collection.", "Transfer of Hydro-Québec and Énergir data, and other energy sources, for every meter in the building."),
+                 ("ENERGY STAR Portfolio Manager file.", "Creation or update of the building profile, validation of areas and uses."),
+                 ("Quality control by an engineer.", "Missing meters, incomplete months and abnormal variances caught before submission."),
+                 ("Submission to the City before June 30.", "With written confirmation of filing."),
+                 ("Annual summary.", "Your energy intensity, emissions and improvement leads, on one page.")],
+    "why_h2": "Why hand it to us",
+    "why": ["You no longer have to think about it: a reminder every spring, filing before the deadline.",
+            "Engineers read your data, not just a form.",
+            "If your building uses 1 GWh or more a year, we check at the same time whether it qualifies for the energy analysis reimbursed by Hydro-Québec.",
+            "Fixed annual price per building, portfolio rate for several buildings."],
+}
+EN_DIVULG_FAQ = [
+    ("Is my 30-unit building covered?", "Yes. The by-law applies to residential buildings with 25 or more dwellings, and to buildings of 2,000 m² or more."),
+    ("What is the deadline?", "June 30 of each year, for the previous calendar year’s consumption."),
+    ("I have no access to my tenants’ meters. What do I do?", "The report covers whole-building consumption. Energy distributors offer an aggregated data transfer; we take care of the request."),
+    ("What does the City do with the data?", "It compares buildings and assigns each a GHG emissions rating. Performance thresholds have been announced for the coming years."),
+    ("How does this relate to Hydro-Québec’s energy analysis?", "The same data shows whether your building reaches 1 GWh a year, the threshold for an analysis reimbursed up to $60,000."),
+]
+
 # ------------------------------------------------------------------ pages
 PAGES = [
     {"key": "merci", "lang": "fr", "type": "thanks", "noindex": True,
@@ -375,6 +511,23 @@ PAGES = [
      "title": "Energy Analysis Reimbursed by Hydro-Québec | GNS Inspect",
      "meta": "Buildings using 1 GWh or more per year: an engineering energy analysis reimbursed up to $60,000 under Hydro-Québec’s Solutions efficaces program.",
      "service_name": "Energy analysis (Solutions efficaces program)", "faq": EN_ANALYSE_FAQ, "content": EN_ANALYSE},
+
+    {"key": "mli", "lang": "fr", "type": "service",
+     "title": "Audit énergétique APH Select (SCHL) à Montréal | GNS Inspect",
+     "meta": "Audit, modélisation et rapport énergétique pour le programme APH Select (MLI Select) de la SCHL : immeubles multilogements existants et neufs. Signé par un ingénieur.",
+     "service_name": "Audit énergétique APH Select (SCHL)", "faq": FR_MLI_FAQ, "content": FR_MLI},
+    {"key": "mli", "lang": "en", "type": "service",
+     "title": "MLI Select Energy Audit (CMHC) in Montréal | GNS Inspect",
+     "meta": "Energy audit, modelling and report for CMHC’s MLI Select program: existing and new multi-unit rental buildings. Signed by an engineer.",
+     "service_name": "MLI Select energy audit (CMHC)", "faq": EN_MLI_FAQ, "content": EN_MLI},
+    {"key": "divulgation", "lang": "fr", "type": "service",
+     "title": "Divulgation énergie et GES, Règlement 21-042 Montréal | GNS Inspect",
+     "meta": "Bâtiments de 2 000 m² et plus ou de 25 logements et plus à Montréal : nous préparons et déposons votre divulgation annuelle de consommation d’énergie avant le 30 juin.",
+     "service_name": "Divulgation annuelle énergie et GES (Règlement 21-042)", "faq": FR_DIVULG_FAQ, "content": FR_DIVULG},
+    {"key": "divulgation", "lang": "en", "type": "service",
+     "title": "Energy and GHG Disclosure, Montréal By-law 21-042 | GNS Inspect",
+     "meta": "Montréal buildings of 2,000 m² or more, or 25+ dwellings: we prepare and file your annual energy consumption disclosure before June 30.",
+     "service_name": "Annual energy and GHG disclosure (By-law 21-042)", "faq": EN_DIVULG_FAQ, "content": EN_DIVULG},
 
     {"key": "services", "lang": "fr", "type": "hub",
      "title": "Services d’ingénierie du bâtiment à Montréal | GNS Inspect",
@@ -504,7 +657,7 @@ CATEGORIES = [
      "slug": {"fr": "tests-moisissures-radon-amiante-qualite-air", "en": "mould-radon-asbestos-air-quality-testing"},
      "fr": {"title": "Tests et analyses : moisissures, radon, amiante", "card": "Moisissures, radon, amiante, qualité de l’air et de l’eau, pyrite et ocre ferreuse : prélèvements, analyses en laboratoire et rapport d’ingénieur.",
             "h1": "Tests de moisissures, de radon, d’amiante et de qualité de l’air",
-            "lead": "Une odeur persistante, un dégât d’eau, un achat à venir ou des travaux à planifier : nous prélevons, faisons analyser en laboratoire et vous remettons un rapport qui explique les résultats, leur cause et les correctifs.",
+            "lead": "Une odeur persistante, un dégât d’eau, un achat à venir ou des travaux à planifier : nous prélevons, faisons analyser en laboratoire et vous remettons un rapport qui explique les résultats, leur cause et les correctifs. Nous testons et nous rapportons : nous ne vendons aucun travail de décontamination, donc aucun intérêt à en trouver.",
             "for": ["Propriétaires, acheteurs et locataires préoccupés par la qualité de l’air ou un dégât d’eau", "Syndicats, gestionnaires et employeurs devant documenter un problème ou des travaux", "Entrepreneurs qui doivent repérer l’amiante avant de démolir ou de rénover"],
             "items": [("Moisissures", "Inspection visuelle, relevés d’humidité, prélèvements d’air et de surface, analyse en laboratoire; identification de la source d’eau et protocole de décontamination."),
                       ("Radon", "Mesure à long terme (au moins trois mois) comparée à la ligne directrice canadienne de 200 Bq/m³; recommandations d’atténuation si elle est dépassée."),
@@ -516,7 +669,7 @@ CATEGORIES = [
             "meta": "Tests de moisissures, radon, amiante, qualité de l’air et de l’eau, pyrite et ocre ferreuse à Montréal. Prélèvements, analyses en laboratoire et rapport d’ingénieur."},
      "en": {"title": "Testing: mould, radon, asbestos", "card": "Mould, radon, asbestos, air and water quality, pyrite and iron ochre: sampling, laboratory analysis and an engineer’s report.",
             "h1": "Mould, radon, asbestos and air quality testing",
-            "lead": "A persistent odour, water damage, an upcoming purchase or work to plan: we take the samples, have them analysed in a laboratory and give you a report that explains the results, their cause and the fix.",
+            "lead": "A persistent odour, water damage, an upcoming purchase or work to plan: we take the samples, have them analysed in a laboratory and give you a report that explains the results, their cause and the fix. We test and we report: we sell no decontamination work, so we have no interest in finding any.",
             "for": ["Owners, buyers and tenants concerned about air quality or water damage", "Syndicates, managers and employers who must document a problem or upcoming work", "Contractors who must locate asbestos before demolition or renovation"],
             "items": [("Mould", "Visual inspection, moisture readings, air and surface sampling, laboratory analysis; identification of the water source and a decontamination protocol."),
                       ("Radon", "Long-term measurement (at least three months) compared with the Canadian guideline of 200 Bq/m³; mitigation recommendations when it is exceeded."),

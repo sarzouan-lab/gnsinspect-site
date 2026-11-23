@@ -30,6 +30,8 @@ SLUGS = {
     ("contact", "fr"): "contact", ("contact", "en"): "contact",
     ("merci", "fr"): "merci", ("merci", "en"): "thank-you",
     ("analyse", "fr"): "analyse-energetique-hydro-quebec", ("analyse", "en"): "energy-analysis-hydro-quebec",
+    ("mli", "fr"): "audit-energetique-aph-select-schl", ("mli", "en"): "energy-audit-mli-select-cmhc",
+    ("divulgation", "fr"): "divulgation-energie-ges-montreal-reglement-21-042", ("divulgation", "en"): "montreal-energy-ghg-disclosure-bylaw-21-042",
 }
 
 def path(lang, key):
@@ -104,7 +106,7 @@ def header(p):
     nav = [
         ("facades", t(lang, "Façades", "Façades")),
         ("stationnements", t(lang, "Stationnements", "Parking garages")),
-        ("analyse", t(lang, "Énergie", "Energy")),
+        ("energie", t(lang, "Énergie", "Energy")),
         ("tests", t(lang, "Tests", "Testing")),
         ("services", t(lang, "Services", "Services")),
         ("contact", t(lang, "Contact", "Contact")),
@@ -138,8 +140,10 @@ def quote_form(p, compact=False):
       <option value="facade">{t(lang,'Inspection de façades (Loi 122)','Façade inspection (Bill 122)')}</option>
       <option value="stationnement">{t(lang,'Inspection de stationnement étagé (Loi 122)','Parking garage inspection (Bill 122)')}</option>
       <option value="les-deux">{t(lang,'Les deux','Both')}</option>
-      {''.join(f'<option value="{c["key"]}">{c[lang]["title"]}</option>' for c in CATEGORIES)}
+      {''.join(f'<option value="{c["key"]}"{" selected" if c["key"] == p["key"] else ""}>{c[lang]["title"]}</option>' for c in CATEGORIES)}
       <option value="analyse-energetique"{' selected' if p['key'] == 'analyse' else ''}>{t(lang,'Analyse énergétique (Hydro-Québec)','Energy analysis (Hydro-Québec)')}</option>
+      <option value="aph-select"{' selected' if p['key'] == 'mli' else ''}>{t(lang,'Audit énergétique APH Select (SCHL)','MLI Select energy audit (CMHC)')}</option>
+      <option value="divulgation-21-042"{' selected' if p['key'] == 'divulgation' else ''}>{t(lang,'Divulgation énergie et GES (Montréal)','Energy and GHG disclosure (Montréal)')}</option>
       <option value="autre">{t(lang,'Autre / je ne sais pas','Other / not sure')}</option>
     </select>
     <label>{t(lang,'Adresse de l’immeuble','Building address')}</label>
@@ -173,7 +177,7 @@ def cred(lang):
   <div>
     <b>{t(lang, 'Une équipe d’ingénieurs membres de l’OIQ', 'A team of OIQ-licensed engineers')}</b><br>
     {t(lang, 'Structure, enveloppe du bâtiment, mécanique et environnement sous un même toit.', 'Structural, building envelope, mechanical and environmental under one roof.')}<br>
-    <small>{t(lang, 'Chaque rapport est signé et scellé par un ingénieur qui en assume la responsabilité professionnelle.', 'Every report is signed and sealed by an engineer who takes professional responsibility for it.')}</small>
+    <small>{t(lang, 'Chaque rapport est signé et scellé par un ingénieur et couvert par une assurance responsabilité professionnelle (erreurs et omissions).', 'Every report is signed and sealed by an engineer and covered by professional liability (errors and omissions) insurance.')}</small>
   </div>
 </div>"""
 
@@ -242,6 +246,13 @@ def jsonld(p):
     return {"@context": "https://schema.org", "@graph": graph}
 
 # ---------------------------------------------------------------- page bodies
+def testimonials(lang):
+    items = SITE.get("testimonials") or []
+    if not items:
+        return ""
+    cards = "".join(f"""<div class="service"><p>« {x['quote_fr'] if lang == 'fr' else x['quote_en']} »</p><p style="margin-top:auto"><b>{x['name']}</b><br><span style="color:var(--grey)">{x['role_fr'] if lang == 'fr' else x['role_en']}</span></p></div>""" for x in items[:3])
+    return f"""<section><div class="wrap"><span class="eyebrow">{t(lang,'Témoignages','Testimonials')}</span><h2>{t(lang,'Ce que nos clients en disent','What our clients say')}</h2><div class="grid-3" style="margin-top:24px">{cards}</div></div></section>"""
+
 def render_home(p):
     lang, c = p["lang"], p["content"]
     svc_cards = "".join(f"""
@@ -275,6 +286,7 @@ def render_home(p):
 </div></section>
 
 {suite_section(lang)}
+{testimonials(lang)}
 
 <section class="soft"><div class="wrap">
   <div class="cred" style="background:#0b3d5c">
@@ -313,12 +325,13 @@ def render_service(p):
     <h2>{c['includes_h2']}</h2><ol class="steps">{incl}</ol>
     <h2>{c['why_h2']}</h2><ul class="checks">{why}</ul>
     {cred(lang)}
+    {energy_pointer(lang, p['key']) if p['key'] in ('analyse','mli','divulgation') else ''}
     <h2>{t(lang,'Questions fréquentes','Frequently asked questions')}</h2>
     <div class="faq">{faq}</div>
   </div>
   <aside class="sticky">{quote_form(p)}</aside>
 </div></section>
-{cta_band(lang, t(lang,'Votre bâtiment consomme 1 GWh ou plus par année?','Does your building use 1 GWh or more a year?') if p['key'] == 'analyse' else None)}"""
+{cta_band(lang, {'analyse': t(lang,'Votre bâtiment consomme 1 GWh ou plus par année?','Does your building use 1 GWh or more a year?'), 'mli': t(lang,'Un dossier APH Select à monter?','An MLI Select file to assemble?'), 'divulgation': t(lang,'Votre divulgation est due le 30 juin.','Your disclosure is due June 30.')}.get(p['key']))}"""
 
 def render_simple(p):
     lang, c = p["lang"], p["content"]
@@ -373,8 +386,16 @@ def render_hub(p):
 <section class="soft"><div class="wrap two-col"><div class="prose"><h2>{t(lang,'Une question? Un ingénieur vous répond.','A question? An engineer answers.')}</h2><p>{t(lang,'Décrivez votre situation; nous vous dirons en 24 h quel service s’applique et à quel prix.','Describe your situation; within 24 h we will tell you which service applies and at what price.')}</p></div><aside>{quote_form(p)}</aside></div></section>
 {cta_band(lang)}"""
 
-def energy_pointer(lang):
-    return f"""<div class="callout"><b>{t(lang,'Bâtiment de 1 GWh et plus par année?','Building using 1 GWh or more a year?')}</b> {t(lang,'L’analyse énergétique peut être remboursée jusqu’à 60 000 $ par Hydro-Québec.','The energy analysis can be reimbursed up to $60,000 by Hydro-Québec.')} <a href="{url(lang,'analyse')}">{t(lang,'Voir les conditions et la démarche','See the conditions and the process')}</a>.</div>"""
+ENERGY = [
+    ("analyse", "Analyse énergétique remboursée", "Reimbursed energy analysis", "Bâtiments de 1 GWh et plus : jusqu’à 60 000 $ d’Hydro-Québec.", "Buildings using 1 GWh or more: up to $60,000 from Hydro-Québec."),
+    ("mli", "Audit énergétique APH Select", "MLI Select energy audit", "Les points d’efficacité énergétique de votre financement SCHL.", "The energy-efficiency points behind your CMHC financing."),
+    ("divulgation", "Divulgation annuelle énergie et GES", "Annual energy and GHG disclosure", "Règlement 21-042 de Montréal : dépôt avant le 30 juin.", "Montréal By-law 21-042: filing before June 30."),
+]
+
+def energy_pointer(lang, skip=None):
+    cards = "".join(f"""<div class="service"><h3>{t(lang, fr, en)}</h3><p>{t(lang, dfr, den)}</p><a class="btn ghost" href="{url(lang, k)}">{t(lang,'Voir le service','See service')}</a></div>"""
+                    for k, fr, en, dfr, den in ENERGY if k != skip)
+    return f"""<h2>{t(lang,'Nos services en énergie','Our energy services')}</h2><div class="{'rows' if skip is None else 'grid-2'} lead-cards" style="margin:18px 0 28px">{cards}</div>"""
 
 def render_category(p):
     lang, c = p["lang"], p["content"]
@@ -389,15 +410,15 @@ def render_category(p):
 </div></section>
 <section><div class="wrap two-col">
   <div class="prose">
+    {energy_pointer(lang) if p["key"] == "energie" else ""}
     <h2>{t(lang,'Pour qui','Who it is for')}</h2><ul class="checks">{who}</ul>
     <h2>{t(lang,'Nos services','Our services')}</h2><ol class="steps">{items}</ol>
-    {energy_pointer(lang) if p["key"] == "energie" else ""}
     {cred(lang)}
     <h2>{t(lang,'Autres domaines','Other practice areas')}</h2><ul>{others}</ul>
   </div>
   <aside class="sticky">{quote_form(p)}</aside>
 </div></section>
-{cta_band(lang)}"""
+{cta_band(lang, t(lang,'Un projet en efficacité énergétique?','An energy-efficiency project?') if p['key'] == 'energie' else None)}"""
 
 def render_thanks(p):
     lang, c = p["lang"], p["content"]
