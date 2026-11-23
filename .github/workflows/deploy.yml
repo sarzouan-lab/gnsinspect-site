@@ -32,15 +32,17 @@ jobs:
           ! grep -q 'content="noindex"' dist/index.html
       - name: Upload changed files to Doteasy
         if: steps.cfg.outputs.ready == 'true'
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
+        env:
+          FTP_USER: ${{ secrets.FTP_USERNAME }}
+          LFTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
           # Doteasy hosting server, addressed by IP: the FTP port is not reachable through the
           # domain name. Its certificate is issued to the host's own name, so the name check is
-          # relaxed; the connection is still encrypted.
-          server: 209.42.24.221
-          security: loose
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ftps
-          local-dir: ./dist/
-          server-dir: ./
+          # relaxed; the connection is still encrypted (TLS is forced).
+          FTP_HOST: 209.42.24.221
+        run: |
+          sudo apt-get install -y -qq lftp >/dev/null
+          lftp --env-password -u "$FTP_USER" "$FTP_HOST" -e "
+            set ftp:ssl-force true; set ftp:ssl-protect-data true; set ssl:verify-certificate no;
+            set net:timeout 30; set net:max-retries 3; set cmd:fail-exit true;
+            mirror --reverse --verbose --parallel=4 --no-perms dist/ ./;
+            cls -1a; quit"
