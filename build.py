@@ -202,6 +202,7 @@ def footer(p):
   <div><h4><a href="{url(lang,'services')}">{t(lang,'Services','Services')}</a></h4><ul>
     <li><a href="{url(lang,'facades')}">{t(lang,'Inspection de façades','Façade inspection')}</a></li>
     <li><a href="{url(lang,'stationnements')}">{t(lang,'Inspection de stationnements','Parking garage inspection')}</a></li>
+    {''.join(f'<li><a href="{url(lang, k)}">{t(lang, fr, en)}</a></li>' for k, fr, en, _a, _b in ENERGY)}
     {''.join(f'<li><a href="{url(lang, c["key"])}">{c[lang]["title"].split(" · ")[0]}</a></li>' for c in CATEGORIES)}
   </ul></div>
   <div><h4>{t(lang,'Entreprise','Company')}</h4><ul>
@@ -247,11 +248,41 @@ def jsonld(p):
 
 # ---------------------------------------------------------------- page bodies
 def testimonials(lang):
-    items = SITE.get("testimonials") or []
+    items = [x for x in (SITE.get("testimonials") or []) if x.get("approved")]
     if not items:
         return ""
-    cards = "".join(f"""<div class="service"><p>« {x['quote_fr'] if lang == 'fr' else x['quote_en']} »</p><p style="margin-top:auto"><b>{x['name']}</b><br><span style="color:var(--grey)">{x['role_fr'] if lang == 'fr' else x['role_en']}</span></p></div>""" for x in items[:3])
+    cards = "".join(f"""<div class="service"><p>« {x['quote_fr'] if lang == 'fr' else x['quote_en']} »</p><p style="margin-top:auto"><b>{x['name']}</b><br><span style="color:var(--grey)">{x['role_fr'] if lang == 'fr' else x['role_en']}</span></p></div>""" for x in items)
     return f"""<section><div class="wrap"><span class="eyebrow">{t(lang,'Témoignages','Testimonials')}</span><h2>{t(lang,'Ce que nos clients en disent','What our clients say')}</h2><div class="grid-3" style="margin-top:24px">{cards}</div></div></section>"""
+
+# Homepage hero slides after the Loi 122 one: (page key, eyebrow, heading, text, button) in FR and EN.
+HERO_SLIDES = [
+    ("analyse", ("Partenaire du programme Solutions efficaces d’Hydro-Québec", "Partner in Hydro-Québec’s Solutions efficaces program"),
+     ("Analyse énergétique de votre bâtiment, remboursée jusqu’à 60 000 $", "An energy analysis of your building, reimbursed up to $60,000"),
+     ("Votre bâtiment consomme 1 GWh ou plus par année? Hydro-Québec rembourse l’analyse réalisée par nos ingénieurs. Nous préparons la demande, faisons l’analyse et vous accompagnons jusqu’aux mesures.", "Does your building use 1 GWh or more a year? Hydro-Québec reimburses the analysis carried out by our engineers. We prepare the application, do the analysis and stay with you through the measures."),
+     ("Voir si vous êtes admissible", "Check your eligibility")),
+    ("tests", ("Tests et analyses en laboratoire", "Testing and laboratory analysis"),
+     ("Moisissures, radon, amiante : des tests indépendants, un rapport d’ingénieur", "Mould, radon, asbestos: independent testing, an engineer’s report"),
+     ("Nous prélevons, faisons analyser en laboratoire et expliquons les résultats, leur cause et les correctifs. Nous ne vendons aucun travail de décontamination.", "We sample, have it analysed in a laboratory and explain the results, their cause and the fix. We sell no decontamination work."),
+     ("Voir les tests offerts", "See our testing services")),
+    ("mli", ("SCHL · APH Select · Immeubles multilogements", "CMHC · MLI Select · Multi-unit buildings"),
+     ("Audit énergétique APH Select pour votre financement SCHL", "MLI Select energy audit for your CMHC financing"),
+     ("Inspection, modélisation et rapport d’audit signé par un ingénieur : les points d’efficacité énergétique qui donnent accès aux primes réduites et à l’amortissement prolongé.", "Inspection, modelling and an engineer-signed audit report: the energy-efficiency points that unlock reduced premiums and longer amortization."),
+     ("Voir l’audit APH Select", "See the MLI Select audit")),
+    ("services", ("Une suite complète de services d’ingénierie", "A full suite of engineering services"),
+     ("Structure, mécanique, environnement, expertise : une seule équipe d’ingénieurs", "Structural, mechanical, environmental, expertise: one engineering team"),
+     ("Inspections pré-achat et pour financement, plans de structure et de CVAC, évaluations environnementales, vices cachés, fonds de prévoyance : de l’inspection jusqu’à la surveillance des travaux.", "Pre-purchase and financing inspections, structural and HVAC design, environmental assessments, latent defects, reserve fund studies: from inspection through construction oversight."),
+     ("Voir tous les services", "See all services")),
+]
+
+def hero_slides(lang):
+    k = 0 if lang == "fr" else 1
+    return "".join(f"""
+      <div class="slide">
+        <span class="eyebrow">{eb[k]}</span>
+        <p class="h1">{h[k]}</p>
+        <p class="lead">{tx[k]}</p>
+        <div class="cta"><a class="btn" href="{url(lang, key)}">{cta[k]}</a><a class="phone" href="tel:{SITE['phone_tel']}">{SITE['phone']}</a></div>
+      </div>""" for key, eb, h, tx, cta in HERO_SLIDES)
 
 def render_home(p):
     lang, c = p["lang"], p["content"]
@@ -263,15 +294,39 @@ def render_home(p):
     why = "".join(f"<li>{x}</li>" for x in c["why"])
     return f"""
 <section class="hero"><div class="wrap">
-  <div>
-    <span class="eyebrow">{c['eyebrow']}</span>
-    <h1>{c['h1']}</h1>
-    <p class="lead">{c['lead']}</p>
-    <div class="cta"><a class="btn" href="#devis">{c['cta']}</a><a class="phone" href="tel:{SITE['phone_tel']}">{SITE['phone']}</a></div>
-    <div class="proof">{''.join(f'<div><b>{b}</b>{s}</div>' for b, s in c['proof'])}</div>
+  <div class="hero-rotator" data-interval="7000">
+    <div class="hero-slides">
+      <div class="slide on">
+        <span class="eyebrow">{c['eyebrow']}</span>
+        <h1>{c['h1']}</h1>
+        <p class="lead">{c['lead']}</p>
+        <div class="cta"><a class="btn" href="#devis">{c['cta']}</a><a class="phone" href="tel:{SITE['phone_tel']}">{SITE['phone']}</a></div>
+        <div class="proof">{''.join(f'<div><b>{b}</b>{s}</div>' for b, s in c['proof'])}</div>
+      </div>
+      {hero_slides(lang)}
+    </div>
+    <div class="hero-dots" role="tablist" aria-label="{t(lang,'Services à la une','Featured services')}">{''.join(f'<button type="button" class="{"on" if i == 0 else ""}" aria-label="{i+1}"></button>' for i in range(len(HERO_SLIDES) + 1))}</div>
   </div>
   {quote_form(p)}
 </div></section>
+<script>
+(function () {{
+  var r = document.querySelector('.hero-rotator'); if (!r) return;
+  var slides = r.querySelectorAll('.slide'), dots = r.querySelectorAll('.hero-dots button'), i = 0, timer = null;
+  function show(n) {{
+    i = (n + slides.length) % slides.length;
+    slides.forEach(function (s, k) {{ s.classList.toggle('on', k === i); }});
+    dots.forEach(function (d, k) {{ d.classList.toggle('on', k === i); }});
+  }}
+  function start() {{ if (!timer) timer = setInterval(function () {{ show(i + 1); }}, +r.dataset.interval); }}
+  function stop() {{ clearInterval(timer); timer = null; }}
+  dots.forEach(function (d, k) {{ d.addEventListener('click', function () {{ stop(); r.dataset.stopped = '1'; show(k); }}); }});
+  r.addEventListener('mouseenter', stop);
+  r.addEventListener('mouseleave', function () {{ if (!r.dataset.stopped) start(); }});
+  r.addEventListener('focusin', stop);
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) start();
+}})();
+</script>
 <a class="strip" href="{url(lang,'analyse')}"><div class="wrap"><b>{t(lang,'Bâtiment de 1 GWh et plus par année?','Building using 1 GWh or more a year?')}</b> {t(lang,'Analyse énergétique remboursée jusqu’à 60 000 $ par Hydro-Québec.','Energy analysis reimbursed up to $60,000 by Hydro-Québec.')} <span>{t(lang,'Voir si vous êtes admissible →','Check your eligibility →')}</span></div></a>
 
 <section><div class="wrap">
@@ -378,6 +433,10 @@ def render_hub(p):
   </div>
 </div></section>
 <section><div class="wrap">
+  <span class="eyebrow">{t(lang,'Énergie et financement','Energy and financing')}</span>
+  {energy_pointer(lang, cls='grid-3')}
+</div></section>
+<section class="soft"><div class="wrap">
   <span class="eyebrow">{t(lang,'Services d’ingénierie','Engineering services')}</span>
   <h2>{t(lang, f'{len(CATEGORIES)} domaines, une équipe', f'{len(CATEGORIES)} practice areas, one team')}</h2>
   <div class="grid-3" style="margin-top:24px">{category_cards(lang)}</div>
@@ -392,10 +451,10 @@ ENERGY = [
     ("divulgation", "Divulgation annuelle énergie et GES", "Annual energy and GHG disclosure", "Règlement 21-042 de Montréal : dépôt avant le 30 juin.", "Montréal By-law 21-042: filing before June 30."),
 ]
 
-def energy_pointer(lang, skip=None):
+def energy_pointer(lang, skip=None, cls=None):
     cards = "".join(f"""<div class="service"><h3>{t(lang, fr, en)}</h3><p>{t(lang, dfr, den)}</p><a class="btn ghost" href="{url(lang, k)}">{t(lang,'Voir le service','See service')}</a></div>"""
                     for k, fr, en, dfr, den in ENERGY if k != skip)
-    return f"""<h2>{t(lang,'Nos services en énergie','Our energy services')}</h2><div class="{'rows' if skip is None else 'grid-2'} lead-cards" style="margin:18px 0 28px">{cards}</div>"""
+    return f"""<h2>{t(lang,'Nos services en énergie','Our energy services')}</h2><div class="{cls or ('rows' if skip is None else 'grid-2')} lead-cards" style="margin:18px 0 28px">{cards}</div>"""
 
 def render_category(p):
     lang, c = p["lang"], p["content"]
@@ -438,6 +497,7 @@ def build():
     urls = []
     for p in PAGES:
         html = head(p) + topbar(p) + header(p) + RENDER[p["type"]](p) + footer(p)
+        html = html.replace(" 000 $", "\u00a0000\u00a0$")  # keep dollar amounts on one line
         rel = path(p["lang"], p["key"]).lstrip("/")
         out_dir = os.path.join(DIST, rel)
         os.makedirs(out_dir, exist_ok=True)

@@ -15,7 +15,24 @@ SITE = {
     # Web3Forms access key (web3forms.com, free, notifications to simon.a@gnsinspect.ca)
     # Client testimonials shown on the homepage. Real, approved quotes only:
     # {"quote_fr": "...", "quote_en": "...", "name": "Prénom N.", "role_fr": "Gestionnaire, 120 logements", "role_en": "Manager, 120 units"}
-    "testimonials": [],
+    # "approved": True only once the person has agreed in writing to the wording and to being named.
+    "testimonials": [
+        {"approved": False, "name": "Howard Szalavetz", "role_fr": "Propriétaire, HS Properties", "role_en": "Owner, HS Properties",
+         "quote_en": "GNS Inspect keeps our portfolio compliant, on time, every time.",
+         "quote_fr": "GNS Inspect garde notre parc immobilier conforme, à temps, à chaque fois."},
+        {"approved": False, "name": "David Bensimon, CPA", "role_fr": "Chef des finances et vice-président, Exploitation, HS Properties", "role_en": "CFO and VP Operations, HS Properties",
+         "quote_en": "What I value most is predictability. GNS Inspect quotes a fixed price, delivers when they say they will, and gives us repair budgets we can plan around.",
+         "quote_fr": "Ce que j’apprécie le plus, c’est la prévisibilité. GNS Inspect donne un prix fixe, livre à la date promise et nous remet des budgets de réparation sur lesquels nous pouvons planifier."},
+        {"approved": False, "name": "Elnaz Roohi", "role_fr": "Gestionnaire d’immeubles, HS Properties", "role_en": "Building Manager, HS Properties",
+         "quote_en": "Scheduling inspections across several buildings is never simple. GNS Inspect works around our tenants and our operations, and the follow-up documents arrive without my having to chase.",
+         "quote_fr": "Planifier des inspections dans plusieurs immeubles n’est jamais simple. GNS Inspect s’adapte à nos locataires et à nos activités, et les documents de suivi arrivent sans que j’aie à relancer."},
+        {"approved": False, "name": "Steve Ohana", "role_fr": "Président et directeur général, Ohana Capital", "role_en": "President and Managing Director, Ohana Capital",
+         "quote_en": "GNS Inspect gives us exactly what we need: a thorough engineering assessment, delivered on time, that we can put in front of our clients and partners with confidence.",
+         "quote_fr": "GNS Inspect nous donne exactement ce qu’il nous faut : une évaluation d’ingénierie rigoureuse, livrée à temps, que nous pouvons présenter à nos clients et partenaires en toute confiance."},
+        {"approved": False, "name": "Yohan Kadoch", "role_fr": "Spécialiste hypothécaire", "role_en": "Mortgage Specialist",
+         "quote_en": "My clients need lender-ready reports quickly. GNS Inspect turns them around on time and in the format lenders and CMHC expect, which keeps financing files moving.",
+         "quote_fr": "Mes clients ont besoin rapidement de rapports prêts pour le prêteur. GNS Inspect les livre à temps et dans le format attendu par les prêteurs et la SCHL, ce qui fait avancer les dossiers de financement."},
+    ],
     "form": {"web3forms_key": "fc748eb5-2abf-4f55-82d2-b8bdfa08a531"},
 }
 
