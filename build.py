@@ -90,6 +90,7 @@ def head(p):
 <link rel="icon" href="{PREFIX}/assets/img/favicon-48.png" sizes="48x48">
 <link rel="apple-touch-icon" href="{PREFIX}/assets/img/icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{PREFIX}/assets/style.css">
 <script type="application/ld+json">{ld}</script>
@@ -552,6 +553,9 @@ def build():
         html = head(p) + topbar(p) + header(p) + RENDER[p["type"]](p) + footer(p)
         ph = photo_for(p["key"])
         if ph:
+            # share image and early fetch of the hero photo (largest element on the page)
+            html = html.replace(f"{SITE['domain']}/assets/img/icon-512.png", SITE['domain'] + ph[len(PREFIX):], 1)
+            html = html.replace('<link rel="stylesheet"', f'<link rel="preload" as="image" href="{ph}" fetchpriority="high">\n<link rel="stylesheet"', 1)
             for cls in ("hero", "page-hero"):
                 html = html.replace(f'<section class="{cls}">', f'<section class="{cls} has-photo" style="--photo:url({ph})">', 1)
         html = html.replace(" 000 $", "\u00a0000\u00a0$")  # keep dollar amounts on one line
