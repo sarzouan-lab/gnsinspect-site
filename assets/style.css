@@ -173,3 +173,7 @@ a.strip:hover { background: var(--yellow-dark); }
 nav.main { gap: 18px; }
 @media (max-width: 1240px) { header.site .btn { padding: 10px 14px; font-size: .92rem; } nav.main { gap: 14px; } nav.main a { font-size: .9rem; } }
 @media (max-width: 1060px) and (min-width: 901px) { header.site .btn { display: none; } }
+
+/* Hero photo with a dark veil so the white text stays readable */
+.has-photo { background: linear-gradient(90deg, rgba(17,17,17,.92) 0%, rgba(17,17,17,.80) 55%, rgba(17,17,17,.55) 100%), var(--photo) center / cover no-repeat; }
+.hero.has-photo::after { display: none; }

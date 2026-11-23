@@ -530,6 +530,18 @@ def render_thanks(p):
 RENDER = {"thanks": render_thanks, "home": render_home, "service": render_service, "simple": render_simple, "hub": render_hub, "category": render_category}
 
 # ---------------------------------------------------------------- build
+# Hero photos: drop <name>.jpg (or .webp) into assets/img/photos/ and rebuild.
+# A page uses its own photo if there is one, otherwise its group's photo.
+PHOTO_FALLBACK = {"index": "home", "fonds": "copropriete", "carnet": "copropriete", "valeur": "copropriete", "charges": "copropriete",
+                  "analyse": "energie", "mli": "energie", "divulgation": "energie", "services": "home", "contact": "home"}
+
+def photo_for(key):
+    for name in (key, PHOTO_FALLBACK.get(key)):
+        for ext in ("jpg", "webp"):
+            if name and os.path.exists(os.path.join(ROOT, "assets", "img", "photos", f"{name}.{ext}")):
+                return f"{PREFIX}/assets/img/photos/{name}.{ext}"
+    return None
+
 def build():
     if os.path.exists(DIST):
         shutil.rmtree(DIST)
@@ -538,6 +550,10 @@ def build():
     urls = []
     for p in PAGES:
         html = head(p) + topbar(p) + header(p) + RENDER[p["type"]](p) + footer(p)
+        ph = photo_for(p["key"])
+        if ph:
+            for cls in ("hero", "page-hero"):
+                html = html.replace(f'<section class="{cls}">', f'<section class="{cls} has-photo" style="--photo:url({ph})">', 1)
         html = html.replace(" 000 $", "\u00a0000\u00a0$")  # keep dollar amounts on one line
         rel = path(p["lang"], p["key"]).lstrip("/")
         out_dir = os.path.join(DIST, rel)
