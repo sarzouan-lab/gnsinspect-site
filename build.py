@@ -29,6 +29,7 @@ SLUGS = {
     ("services", "fr"): "services", ("services", "en"): "services",
     ("contact", "fr"): "contact", ("contact", "en"): "contact",
     ("merci", "fr"): "merci", ("merci", "en"): "thank-you",
+    ("analyse", "fr"): "analyse-energetique-hydro-quebec", ("analyse", "en"): "energy-analysis-hydro-quebec",
 }
 
 def path(lang, key):
@@ -136,6 +137,7 @@ def quote_form(p, compact=False):
       <option value="stationnement">{t(lang,'Inspection de stationnement étagé (Loi 122)','Parking garage inspection (Bill 122)')}</option>
       <option value="les-deux">{t(lang,'Les deux','Both')}</option>
       {''.join(f'<option value="{c["key"]}">{c[lang]["title"]}</option>' for c in CATEGORIES)}
+      <option value="analyse-energetique"{' selected' if p['key'] == 'analyse' else ''}>{t(lang,'Analyse énergétique (Hydro-Québec)','Energy analysis (Hydro-Québec)')}</option>
       <option value="autre">{t(lang,'Autre / je ne sais pas','Other / not sure')}</option>
     </select>
     <label>{t(lang,'Adresse de l’immeuble','Building address')}</label>
@@ -173,10 +175,10 @@ def cred(lang):
   </div>
 </div>"""
 
-def cta_band(lang):
+def cta_band(lang, heading=None):
     return f"""
 <div class="cta-band"><div class="wrap">
-  <h2>{t(lang, 'Votre prochaine échéance Loi 122 approche?', 'Is your next Bill 122 deadline coming up?')}</h2>
+  <h2>{heading or t(lang, 'Votre prochaine échéance Loi 122 approche?', 'Is your next Bill 122 deadline coming up?')}</h2>
   <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap">
     <a class="phone" href="tel:{SITE['phone_tel']}">{SITE['phone']}</a>
     <a class="btn" href="#devis">{t(lang,'Demander une soumission','Request a quote')}</a>
@@ -275,8 +277,8 @@ def render_home(p):
   <div class="cred" style="background:#0b3d5c">
     <div class="seal" style="background:#fff;color:#0b3d5c;font-size:.7rem">Hydro-<br>Québec</div>
     <div><b>{t(lang,'Partenaire du programme Solutions efficaces d’Hydro-Québec','Partner in Hydro-Québec’s Solutions efficaces program')}</b><br>
-    {t(lang,'Nous déposons vos demandes d’appui financier : étude d’ingénierie subventionnée jusqu’à 60 000 $ et mesures financées en partie, pour les bâtiments commerciaux et multilogements.','We file your financial-assistance applications: engineering study subsidized up to $60,000 and measures partly funded, for commercial and multi-unit buildings.')}
-    &nbsp;<a href="{url(lang,'energie')}" style="color:var(--yellow);font-weight:700">{t(lang,'En savoir plus →','Learn more →')}</a></div>
+    {t(lang,'Bâtiment de 1 GWh et plus par année? Votre analyse énergétique peut être remboursée jusqu’à 60 000 $, et les mesures qui suivent financées en partie.','Building using 1 GWh or more a year? Your energy analysis can be reimbursed up to $60,000, and the measures that follow partly funded.')}
+    &nbsp;<a href="{url(lang,'analyse')}" style="color:var(--yellow);font-weight:700">{t(lang,'Voir l’analyse énergétique →','See the energy analysis →')}</a></div>
   </div>
 </div></section>
 
@@ -313,7 +315,7 @@ def render_service(p):
   </div>
   <aside class="sticky">{quote_form(p)}</aside>
 </div></section>
-{cta_band(lang)}"""
+{cta_band(lang, t(lang,'Votre bâtiment consomme 1 GWh ou plus par année?','Does your building use 1 GWh or more a year?') if p['key'] == 'analyse' else None)}"""
 
 def render_simple(p):
     lang, c = p["lang"], p["content"]
@@ -367,6 +369,9 @@ def render_hub(p):
 <section class="soft"><div class="wrap two-col"><div class="prose"><h2>{t(lang,'Une question? Un ingénieur vous répond.','A question? An engineer answers.')}</h2><p>{t(lang,'Décrivez votre situation; nous vous dirons en 24 h quel service s’applique et à quel prix.','Describe your situation; within 24 h we will tell you which service applies and at what price.')}</p></div><aside>{quote_form(p)}</aside></div></section>
 {cta_band(lang)}"""
 
+def energy_pointer(lang):
+    return f"""<div class="callout"><b>{t(lang,'Bâtiment de 1 GWh et plus par année?','Building using 1 GWh or more a year?')}</b> {t(lang,'L’analyse énergétique peut être remboursée jusqu’à 60 000 $ par Hydro-Québec.','The energy analysis can be reimbursed up to $60,000 by Hydro-Québec.')} <a href="{url(lang,'analyse')}">{t(lang,'Voir les conditions et la démarche','See the conditions and the process')}</a>.</div>"""
+
 def render_category(p):
     lang, c = p["lang"], p["content"]
     items = "".join(f"<li><b>{a}</b>{b}</li>" for a, b in c["items"])
@@ -382,6 +387,7 @@ def render_category(p):
   <div class="prose">
     <h2>{t(lang,'Pour qui','Who it is for')}</h2><ul class="checks">{who}</ul>
     <h2>{t(lang,'Nos services','Our services')}</h2><ol class="steps">{items}</ol>
+    {energy_pointer(lang) if p["key"] == "energie" else ""}
     {cred(lang)}
     <h2>{t(lang,'Autres domaines','Other practice areas')}</h2><ul>{others}</ul>
   </div>

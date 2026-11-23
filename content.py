@@ -256,6 +256,72 @@ EN_CONTACT_BODY = """
 <p>Island of Montréal, Laval, Longueuil and the South Shore, North Shore, Laurentides and Montérégie.</p>
 """
 
+# ------------------------------------------------------------------ Hydro-Québec energy analysis (Solutions efficaces)
+# Figures from Hydro-Québec's Analyse énergétique component (guide updated March 31, 2026).
+# Partner rules: no Hydro-Québec logo, nothing implying Hydro-Québec recommends or mandates GNS Inspect.
+FR_ANALYSE = {
+    "crumb": "Analyse énergétique",
+    "eyebrow": "Programme Solutions efficaces d’Hydro-Québec · Volet Analyse énergétique",
+    "h1": "Analyse énergétique de votre bâtiment, remboursée jusqu’à 60 000 $ par Hydro-Québec",
+    "lead": "Si votre bâtiment consomme 1 GWh d’électricité ou plus par année, Hydro-Québec rembourse le coût d’une analyse énergétique réalisée par des ingénieurs : jusqu’à 50 000 $ pour l’efficacité énergétique, ou 60 000 $ si l’analyse couvre aussi la gestion de la demande de puissance. GNS Inspect, partenaire du programme, prépare la demande, réalise l’analyse et vous accompagne jusqu’à la mise en œuvre des mesures.",
+    "who_h2": "Votre bâtiment est-il admissible?",
+    "who": ["Bâtiment commercial, institutionnel ou industriel situé au Québec et alimenté par Hydro-Québec.",
+            "Consommation d’électricité d’au moins 1 GWh par année (environ 100 000 $ et plus de facture annuelle).",
+            "Aucune analyse énergétique déjà soumise à Hydro-Québec pour ce bâtiment depuis cinq ans.",
+            "L’analyse ne peut pas porter uniquement sur l’éclairage ni viser le chauffage par résistance électrique."],
+    "callout": "<b>Comment le remboursement est versé :</b> 40 % lorsque Hydro-Québec confirme la conformité du rapport d’analyse, puis 60 % lorsque vous mettez en œuvre au moins une des mesures recommandées. La demande doit être acceptée par Hydro-Québec <b>avant</b> le début de l’analyse.",
+    "includes_h2": "Notre démarche, de la facture à la mesure réalisée",
+    "includes": [("Vérification d’admissibilité, sans frais.", "Envoyez-nous 12 mois de factures d’électricité; nous confirmons la consommation de référence et le plafond applicable."),
+                 ("Proposition d’analyse.", "Nous préparons le formulaire et l’offre de services, puis les déposons à Hydro-Québec en votre nom à titre de partenaire."),
+                 ("Relevés et analyse.", "Enveloppe, chauffage, ventilation, climatisation, procédés, contrôles : mesures sur place, profils de consommation et scénarios chiffrés."),
+                 ("Rapport d’analyse signé par un ingénieur.", "Pour chaque mesure : investissement, économies d’énergie et de facture, période de récupération, recommandation."),
+                 ("Dépôt et suivi du remboursement.", "Rapport, factures et grille de coûts transmis à Hydro-Québec; suivi jusqu’au premier versement."),
+                 ("Mise en œuvre des mesures.", "Plans et devis, demande d’appui financier pour les travaux, surveillance et mesurage : ce qui déclenche le second versement.")],
+    "why_h2": "Pourquoi passer par GNS Inspect",
+    "why": ["Une équipe d’ingénieurs en structure, enveloppe et mécanique du bâtiment : l’analyse, les plans et la surveillance sous un même toit.",
+            "Partenaire du programme Solutions efficaces : nous préparons et déposons les documents en votre nom.",
+            "Des recommandations classées par rentabilité, avec les appuis financiers disponibles pour chaque mesure.",
+            "Un seul interlocuteur, de la première facture analysée jusqu’au dernier versement."],
+}
+FR_ANALYSE_FAQ = [
+    ("Combien me coûte l’analyse?", "Hydro-Québec rembourse les coûts admissibles de l’analyse jusqu’à 50 000 $, ou 60 000 $ si elle couvre aussi la gestion de la demande de puissance. Vous recevez 40 % à l’acceptation du rapport et 60 % après avoir mis en œuvre au moins une mesure. Nous vous remettons un prix fixe avant de déposer la demande."),
+    ("Qu’est-ce qu’un GWh par année?", "Un million de kWh. C’est typiquement un immeuble de bureaux ou industriel de bonne taille, un centre commercial, un entrepôt réfrigéré, un aréna ou une usine. Vos 12 dernières factures suffisent pour le vérifier."),
+    ("Suis-je obligé de réaliser toutes les mesures recommandées?", "Non. Le second versement est déclenché par la mise en œuvre d’au moins une mesure conforme aux exigences du programme. Les autres restent à votre discrétion."),
+    ("Mon bâtiment consomme moins de 1 GWh. Y a-t-il autre chose?", "Oui. Les volets Petites entreprises et Moyennes et grandes entreprises du programme offrent un appui financier pour les mesures elles-mêmes. Nous vérifions lequel s’applique."),
+    ("Hydro-Québec recommande-t-elle GNS Inspect?", "Non. GNS Inspect est un partenaire inscrit au programme, ce qui nous permet de préparer et de déposer les demandes en votre nom. Hydro-Québec ne recommande ni ne mandate aucun partenaire."),
+]
+EN_ANALYSE = {
+    "crumb": "Energy analysis",
+    "eyebrow": "Hydro-Québec’s Solutions efficaces program · Energy analysis component",
+    "h1": "An energy analysis of your building, reimbursed up to $60,000 by Hydro-Québec",
+    "lead": "If your building uses 1 GWh of electricity or more per year, Hydro-Québec reimburses the cost of an energy analysis carried out by engineers: up to $50,000 for energy efficiency, or $60,000 when the analysis also covers demand response. GNS Inspect, a partner in the program, prepares the application, performs the analysis and stays with you through implementation.",
+    "who_h2": "Is your building eligible?",
+    "who": ["Commercial, institutional or industrial building located in Québec and supplied by Hydro-Québec.",
+            "Electricity use of at least 1 GWh per year (roughly $100,000 or more in annual bills).",
+            "No energy analysis already submitted to Hydro-Québec for the building in the last five years.",
+            "The analysis cannot cover lighting only, or aim at electric resistance heating."],
+    "callout": "<b>How the reimbursement is paid:</b> 40% once Hydro-Québec confirms the analysis report is compliant, then 60% once you implement at least one of the recommended measures. The application must be accepted by Hydro-Québec <b>before</b> the analysis starts.",
+    "includes_h2": "Our process, from your bills to an implemented measure",
+    "includes": [("Eligibility check, at no charge.", "Send us 12 months of electricity bills; we confirm the reference consumption and the applicable cap."),
+                 ("Analysis proposal.", "We prepare the form and the service offer, then file them with Hydro-Québec on your behalf as a partner."),
+                 ("Survey and analysis.", "Envelope, heating, ventilation, cooling, processes, controls: site measurements, load profiles and costed scenarios."),
+                 ("Engineer-signed analysis report.", "For each measure: investment, energy and bill savings, payback period, recommendation."),
+                 ("Filing and reimbursement follow-up.", "Report, invoices and cost grid sent to Hydro-Québec; follow-up through the first payment."),
+                 ("Implementing the measures.", "Drawings and specifications, the financial-assistance application for the work, oversight and measurement: the step that triggers the second payment.")],
+    "why_h2": "Why go through GNS Inspect",
+    "why": ["A team of structural, envelope and building-mechanical engineers: analysis, drawings and oversight under one roof.",
+            "Partner in the Solutions efficaces program: we prepare and file the documents on your behalf.",
+            "Recommendations ranked by return, with the financial assistance available for each measure.",
+            "One point of contact, from the first bill reviewed to the last payment."],
+}
+EN_ANALYSE_FAQ = [
+    ("What does the analysis cost me?", "Hydro-Québec reimburses the eligible costs of the analysis up to $50,000, or $60,000 when it also covers demand response. You receive 40% when the report is accepted and 60% after implementing at least one measure. We give you a fixed price before filing the application."),
+    ("What is 1 GWh per year?", "One million kWh. Typically a good-sized office or industrial building, a shopping centre, a cold-storage warehouse, an arena or a plant. Your last 12 bills are enough to check."),
+    ("Do I have to implement every recommended measure?", "No. The second payment is triggered by implementing at least one measure that meets program requirements. The rest is at your discretion."),
+    ("My building uses less than 1 GWh. Is there anything else?", "Yes. The program’s Small business and Medium and large business components provide financial assistance for the measures themselves. We check which one applies."),
+    ("Does Hydro-Québec recommend GNS Inspect?", "No. GNS Inspect is a registered partner in the program, which lets us prepare and file applications on your behalf. Hydro-Québec does not recommend or mandate any partner."),
+]
+
 # ------------------------------------------------------------------ pages
 PAGES = [
     {"key": "merci", "lang": "fr", "type": "thanks", "noindex": True,
@@ -292,6 +358,15 @@ PAGES = [
      "title": "Bill 122 Parking Garage Inspection Montréal | GNS Inspect Engineers",
      "meta": "Annual check and five-year in-depth engineer verification of your underground or above-grade parking structure. RBQ-compliant report.",
      "service_name": "Bill 122 Parking Garage Inspection", "faq": EN_STAT_FAQ, "content": EN_STAT},
+
+    {"key": "analyse", "lang": "fr", "type": "service",
+     "title": "Analyse énergétique remboursée par Hydro-Québec | GNS Inspect",
+     "meta": "Bâtiment de 1 GWh et plus par année : analyse énergétique par des ingénieurs, remboursée jusqu’à 60 000 $ par le programme Solutions efficaces d’Hydro-Québec.",
+     "service_name": "Analyse énergétique (programme Solutions efficaces)", "faq": FR_ANALYSE_FAQ, "content": FR_ANALYSE},
+    {"key": "analyse", "lang": "en", "type": "service",
+     "title": "Energy Analysis Reimbursed by Hydro-Québec | GNS Inspect",
+     "meta": "Buildings using 1 GWh or more per year: an engineering energy analysis reimbursed up to $60,000 under Hydro-Québec’s Solutions efficaces program.",
+     "service_name": "Energy analysis (Solutions efficaces program)", "faq": EN_ANALYSE_FAQ, "content": EN_ANALYSE},
 
     {"key": "services", "lang": "fr", "type": "hub",
      "title": "Services d’ingénierie du bâtiment à Montréal | GNS Inspect",
@@ -471,7 +546,7 @@ CATEGORIES = [
      "slug": {"fr": "efficacite-energetique-partenaire-hydro-quebec", "en": "energy-efficiency-hydro-quebec-partner"},
      "fr": {"title": "Efficacité énergétique · Solutions efficaces", "card": "Partenaire du programme Solutions efficaces d’Hydro-Québec : études et projets d’efficacité énergétique subventionnés pour bâtiments commerciaux et multilogements.",
             "h1": "Efficacité énergétique : partenaire du programme Solutions efficaces d’Hydro-Québec",
-            "lead": "GNS Inspect est partenaire reconnu du programme Solutions efficaces d’Hydro-Québec. Nous préparons et déposons vos demandes d’appui financier pour les bâtiments commerciaux, institutionnels et multilogements : l’étude d’ingénierie peut être subventionnée jusqu’à 60 000 $, et les mesures retenues financées en partie par Hydro-Québec.",
+            "lead": "GNS Inspect est partenaire du programme Solutions efficaces d’Hydro-Québec. Nous préparons et déposons vos demandes d’appui financier pour les bâtiments commerciaux, institutionnels et multilogements : l’analyse énergétique peut être remboursée jusqu’à 50 000 $ (60 000 $ si elle couvre aussi la gestion de la demande de puissance), et les mesures retenues financées en partie par Hydro-Québec.",
             "for": ["Propriétaires et gestionnaires d’immeubles commerciaux, industriels et institutionnels", "Syndicats et propriétaires de multilogements avec factures énergétiques élevées", "Investisseurs visant les points énergie du programme MLI Select de la SCHL"],
             "items": [("Étude de faisabilité subventionnée", "Audit énergétique et analyse d’ingénierie admissibles au programme Solutions efficaces; GNS Inspect prépare et dépose la demande à titre de partenaire."),
                       ("Conception des mesures", "Enveloppe, CVAC, éclairage, récupération de chaleur, thermopompes, contrôles : plans signés par nos ingénieurs."),
@@ -482,7 +557,7 @@ CATEGORIES = [
             "meta": "Partenaire du programme Solutions efficaces d’Hydro-Québec à Montréal : études d’efficacité énergétique subventionnées, conception CVAC et enveloppe, aide financière pour bâtiments commerciaux et multilogements."},
      "en": {"title": "Energy efficiency · Solutions efficaces", "card": "Partner in Hydro-Québec’s Solutions efficaces program: subsidized energy-efficiency studies and projects for commercial and multi-unit buildings.",
             "h1": "Energy efficiency: partner in Hydro-Québec’s Solutions efficaces program",
-            "lead": "GNS Inspect is a recognized partner in Hydro-Québec’s Solutions efficaces program. We prepare and file your financial-assistance applications for commercial, institutional and multi-unit buildings: the engineering study can be subsidized up to $60,000, and the selected measures partly funded by Hydro-Québec.",
+            "lead": "GNS Inspect is a partner in Hydro-Québec’s Solutions efficaces program. We prepare and file your financial-assistance applications for commercial, institutional and multi-unit buildings: the energy analysis can be reimbursed up to $50,000 ($60,000 when it also covers demand response), and the selected measures partly funded by Hydro-Québec.",
             "for": ["Owners and managers of commercial, industrial and institutional buildings", "Syndicates and multi-unit owners with high energy bills", "Investors targeting the energy points of CMHC’s MLI Select program"],
             "items": [("Subsidized feasibility study", "Energy audit and engineering analysis eligible under the Solutions efficaces program; GNS Inspect prepares and files the application as a partner."),
                       ("Measure design", "Envelope, HVAC, lighting, heat recovery, heat pumps, controls: drawings sealed by our engineers."),
