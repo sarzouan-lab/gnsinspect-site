@@ -1,0 +1,18 @@
+name: DNS check
+# Manual diagnostic: where gnsinspect.ca points according to its own name servers and public resolvers.
+on: workflow_dispatch
+jobs:
+  dns:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "== name servers =="; dig +short NS gnsinspect.ca
+          for ns in $(dig +short NS gnsinspect.ca); do echo "-- $ns: A=$(dig +short A gnsinspect.ca @$ns | tr '\n' ' ') www=$(dig +short www.gnsinspect.ca @$ns | tr '\n' ' ') MX=$(dig +short MX gnsinspect.ca @$ns | tr '\n' ' ')"; done
+          echo "== public resolvers =="
+          for r in 1.1.1.1 8.8.8.8 9.9.9.9; do echo "$r: $(dig +short A gnsinspect.ca @$r | tr '\n' ' ')"; done
+          echo "== whois =="; sudo apt-get install -y -qq whois >/dev/null 2>&1; whois gnsinspect.ca | grep -iE 'registrar:|name server|status|expir|updated' | head -15
+          echo "== reverse =="; dig +short -x 192.250.237.62; dig +short -x 209.42.24.221
+          echo "== ports on 192.250.237.62 =="
+          for p in 80 443 25 21 2083; do timeout 6 bash -c "exec 3<>/dev/tcp/192.250.237.62/$p" 2>/dev/null && echo "$p open" || echo "$p closed/filtered"; done
+          echo "== direct server with browser user agent =="
+          curl -sS -m 20 -k -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/131 Safari/537.36" --resolve gnsinspect.ca:443:209.42.24.221 https://gnsinspect.ca/ | grep -o '<title>[^<]*</title>' | head -1
