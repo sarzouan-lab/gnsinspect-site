@@ -32,6 +32,8 @@ SLUGS = {
     ("analyse", "fr"): "analyse-energetique-hydro-quebec", ("analyse", "en"): "energy-analysis-hydro-quebec",
     ("fonds", "fr"): "etude-fonds-de-prevoyance-loi-16", ("fonds", "en"): "reserve-fund-study-bill-16",
     ("carnet", "fr"): "carnet-entretien-copropriete-loi-16", ("carnet", "en"): "condominium-maintenance-log-bill-16",
+    ("valeur", "fr"): "valeur-de-reconstruction-copropriete-assurance", ("valeur", "en"): "condominium-reconstruction-value-appraisal",
+    ("charges", "fr"): "etude-charges-communes-copropriete", ("charges", "en"): "condominium-common-expense-study",
     ("mli", "fr"): "audit-energetique-aph-select-schl", ("mli", "en"): "energy-audit-mli-select-cmhc",
     ("divulgation", "fr"): "divulgation-energie-ges-montreal-reglement-21-042", ("divulgation", "en"): "montreal-energy-ghg-disclosure-bylaw-21-042",
 }
@@ -147,6 +149,8 @@ def quote_form(p, compact=False):
       <option value="analyse-energetique"{' selected' if p['key'] == 'analyse' else ''}>{t(lang,'Analyse énergétique (Hydro-Québec)','Energy analysis (Hydro-Québec)')}</option>
       <option value="fonds-prevoyance"{' selected' if p['key'] == 'fonds' else ''}>{t(lang,'Étude du fonds de prévoyance (Loi 16)','Reserve fund study (Bill 16)')}</option>
       <option value="carnet-entretien"{' selected' if p['key'] == 'carnet' else ''}>{t(lang,'Carnet d’entretien (Loi 16)','Maintenance log (Bill 16)')}</option>
+      <option value="valeur-reconstruction"{' selected' if p['key'] == 'valeur' else ''}>{t(lang,'Valeur de reconstruction (copropriété)','Reconstruction value (condominium)')}</option>
+      <option value="charges-communes"{' selected' if p['key'] == 'charges' else ''}>{t(lang,'Étude des charges communes','Common-expense study')}</option>
       <option value="aph-select"{' selected' if p['key'] == 'mli' else ''}>{t(lang,'Audit énergétique APH Select (SCHL)','MLI Select energy audit (CMHC)')}</option>
       <option value="divulgation-21-042"{' selected' if p['key'] == 'divulgation' else ''}>{t(lang,'Divulgation énergie et GES (Montréal)','Energy and GHG disclosure (Montréal)')}</option>
       <option value="autre">{t(lang,'Autre / je ne sais pas','Other / not sure')}</option>
@@ -403,7 +407,7 @@ def render_service(p):
   </div>
   <aside class="sticky">{quote_form(p)}</aside>
 </div></section>
-{cta_band(lang, {'analyse': t(lang,'Votre bâtiment consomme 1 GWh ou plus par année?','Does your building use 1 GWh or more a year?'), 'mli': t(lang,'Un dossier APH Select à monter?','An MLI Select file to assemble?'), 'divulgation': t(lang,'Votre divulgation est due le 30 juin.','Your disclosure is due June 30.'), 'fonds': t(lang,'Votre étude du fonds de prévoyance est due d’ici août 2028.','Your reserve fund study is due by August 2028.'), 'carnet': t(lang,'Votre carnet d’entretien est dû d’ici août 2028.','Your maintenance log is due by August 2028.')}.get(p['key']))}"""
+{cta_band(lang, {'analyse': t(lang,'Votre bâtiment consomme 1 GWh ou plus par année?','Does your building use 1 GWh or more a year?'), 'mli': t(lang,'Un dossier APH Select à monter?','An MLI Select file to assemble?'), 'divulgation': t(lang,'Votre divulgation est due le 30 juin.','Your disclosure is due June 30.'), 'fonds': t(lang,'Votre étude du fonds de prévoyance est due d’ici août 2028.','Your reserve fund study is due by August 2028.'), 'carnet': t(lang,'Votre carnet d’entretien est dû d’ici août 2028.','Your maintenance log is due by August 2028.'), 'valeur': t(lang,'Votre évaluation a plus de 5 ans?','Is your appraisal more than 5 years old?'), 'charges': t(lang,'Des charges communes qui grimpent?','Common expenses climbing?')}.get(p['key']))}"""
 
 def render_simple(p):
     lang, c = p["lang"], p["content"]
@@ -455,7 +459,7 @@ def render_hub(p):
 </div></section>
 <section><div class="wrap" style="margin-top:-40px">
   <span class="eyebrow">{t(lang,'Syndicats de copropriété · Loi 16','Condominium syndicates · Bill 16')}</span>
-  {group_pointer(lang, 'copropriete', cls='grid-2')}
+  {group_pointer(lang, 'copropriete', cls='grid-2', only=('fonds','carnet','valeur','charges'))}
 </div></section>
 <section class="soft"><div class="wrap">
   <span class="eyebrow">{t(lang,'Services d’ingénierie','Engineering services')}</span>
@@ -475,6 +479,8 @@ ENERGY = [
 CONDO = [
     ("fonds", "Étude du fonds de prévoyance", "Reserve fund study", "Projection sur 25 ans et scénarios de cotisation. Échéance août 2028.", "25-year projection and contribution scenarios. August 2028 deadline."),
     ("carnet", "Carnet d’entretien", "Maintenance log", "Inventaire, état des composantes et calendrier de 25 ans.", "Inventory, component condition and 25-year schedule."),
+    ("valeur", "Valeur de reconstruction", "Reconstruction value", "Évaluation pour l’assurance du syndicat, obligatoire tous les 5 ans.", "Appraisal for the syndicate’s insurance, mandatory every 5 years."),
+    ("charges", "Étude des charges communes", "Common-expense study", "Où va l’argent, et un budget d’exploitation réaliste.", "Where the money goes, and a realistic operating budget."),
     ("facades", "Inspection de façades (Loi 122)", "Façade inspection (Bill 122)", "Immeubles de 5 étages et plus, tous les 5 ans.", "Buildings of 5+ storeys, every 5 years."),
     ("stationnements", "Inspection de stationnement (Loi 122)", "Parking garage inspection (Bill 122)", "Vérification annuelle et approfondie quinquennale.", "Annual check and five-year in-depth verification."),
 ]
@@ -482,10 +488,10 @@ GROUPS = {"energie": (ENERGY, "Nos services en énergie", "Our energy services")
           "copropriete": (CONDO, "Nos services aux copropriétés", "Our condominium services")}
 GROUP_OF = {k: g for g, (items, _f, _e) in GROUPS.items() for k, *_ in items if k not in ("facades", "stationnements")}
 
-def group_pointer(lang, group, skip=None, cls=None):
+def group_pointer(lang, group, skip=None, cls=None, only=None):
     items, hfr, hen = GROUPS[group]
     cards = "".join(f"""<div class="service"><h3>{t(lang, fr, en)}</h3><p>{t(lang, dfr, den)}</p><a class="btn ghost" href="{url(lang, k)}">{t(lang,'Voir le service','See service')}</a></div>"""
-                    for k, fr, en, dfr, den in items if k != skip)
+                    for k, fr, en, dfr, den in items if k != skip and (only is None or k in only))
     return f"""<h2>{t(lang, hfr, hen)}</h2><div class="{cls or 'rows'} lead-cards" style="margin:18px 0 28px">{cards}</div>"""
 
 def energy_pointer(lang, skip=None, cls=None):

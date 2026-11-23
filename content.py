@@ -7,9 +7,9 @@ SITE = {
     "phone_tel": "+15149652842",
     "phone_e164": "+1-514-965-2842",
     "email": "info@gnsinspect.ca",
-    "street": "970 Montée de Liesse, bureau 209",
+    "street": "970 Montée de Liesse, bureau 207",
     "postal": "H4T 1W7",
-    "address": "970 Montée de Liesse, bureau 209, Montréal (Québec) H4T 1W7",
+    "address": "970 Montée de Liesse, bureau 207, Montréal (Québec) H4T 1W7",
     # Form backend. Create a free Formspree form (formspree.io), set the
     # notification address to simon.a@gnsinspect.ca, and paste its endpoint here.
     # Web3Forms access key (web3forms.com, free, notifications to simon.a@gnsinspect.ca)
@@ -156,7 +156,7 @@ FR_SERVICES_BODY = """
 FR_CONTACT_BODY = """
 <h2>Parlez directement à un ingénieur</h2>
 <p>Téléphone : <a href="tel:+15149652842">514-965-2842</a><br>Courriel : <a href="mailto:info@gnsinspect.ca">info@gnsinspect.ca</a></p>
-<p>970 Montée de Liesse, bureau 209<br>Montréal (Québec) H4T 1W7</p>
+<p>970 Montée de Liesse, bureau 207<br>Montréal (Québec) H4T 1W7</p>
 <p>Lundi à jeudi : 8 h à 18 h<br>Vendredi : 8 h à 13 h<br>Urgences (condition dangereuse) : 7 jours sur 7.</p>
 <h2>Territoire desservi</h2>
 <p>Île de Montréal, Laval, Longueuil et la Rive-Sud, Rive-Nord, Laurentides et Montérégie.</p>
@@ -282,7 +282,7 @@ EN_SERVICES_BODY = """
 EN_CONTACT_BODY = """
 <h2>Speak directly with an engineer</h2>
 <p>Phone: <a href="tel:+15149652842">514-965-2842</a><br>Email: <a href="mailto:info@gnsinspect.ca">info@gnsinspect.ca</a></p>
-<p>970 Montée de Liesse, Suite 209<br>Montréal, Québec H4T 1W7</p>
+<p>970 Montée de Liesse, Suite 207<br>Montréal, Québec H4T 1W7</p>
 <p>Monday to Thursday: 8 am to 6 pm<br>Friday: 8 am to 1 pm<br>Emergencies (dangerous condition): 7 days a week.</p>
 <h2>Service area</h2>
 <p>Island of Montréal, Laval, Longueuil and the South Shore, North Shore, Laurentides and Montérégie.</p>
@@ -612,6 +612,130 @@ EN_CARNET_FAQ = [
     ("What must the attestation given at a sale contain?", "Among other things, the reserve fund balance, major work completed and work planned over 10 years. An up-to-date log lets you produce it within the 15-day deadline."),
 ]
 
+# ------------------------------------------------------------------ Condominiums: reconstruction value (insurance) and common-expense study
+# Art. 1073 C.c.Q. and its regulation: the reconstruction-cost appraisal must be made by a member of the
+# Ordre des évaluateurs agréés du Québec, at least every 5 years (in force April 15, 2021).
+FR_VALEUR = {
+    "crumb": "Valeur de reconstruction",
+    "eyebrow": "Copropriété · Assurance du syndicat · Obligatoire tous les 5 ans",
+    "h1": "Évaluation de la valeur de reconstruction de votre copropriété, pour l’assurance du syndicat",
+    "lead": "Depuis le 15 avril 2021, le syndicat doit faire évaluer le coût de reconstruction de l’immeuble au moins tous les 5 ans, pour que le montant d’assurance couvre une reconstruction complète. Nous réalisons le relevé technique de l’immeuble et coordonnons l’évaluation avec un évaluateur agréé, qui signe le rapport exigé par la loi.",
+    "who_h2": "Ce que la loi exige",
+    "who": ["Tous les syndicats de copropriété divise doivent assurer l’immeuble à sa valeur de reconstruction.",
+            "L’évaluation du coût de reconstruction doit être faite par un membre de l’Ordre des évaluateurs agréés du Québec.",
+            "Elle doit être refaite au moins tous les 5 ans.",
+            "Le syndicat doit aussi tenir une description des parties privatives (unité de référence) et un fonds d’auto-assurance pour payer les franchises."],
+    "callout": "<b>Une évaluation trop basse coûte cher le jour du sinistre.</b> Si le montant assuré est inférieur au coût réel de reconstruction, la différence retombe sur les copropriétaires. Les coûts de construction ayant beaucoup augmenté, une évaluation de plus de 5 ans est presque toujours dépassée.",
+    "includes_h2": "Notre démarche",
+    "includes": [("Revue documentaire.", "Déclaration de copropriété, plans, police d’assurance en vigueur et dernière évaluation."),
+                 ("Relevé technique par nos ingénieurs.", "Superficies, systèmes constructifs, enveloppe, mécanique, électricité, ascenseurs, stationnement et aménagements extérieurs."),
+                 ("Parties communes et parties privatives.", "Distinction entre ce que le syndicat doit assurer et les améliorations apportées par les copropriétaires."),
+                 ("Évaluation par un évaluateur agréé.", "Coût de reconstruction à neuf, démolition, déblaiement et honoraires professionnels compris; rapport signé par le membre de l’Ordre."),
+                 ("Remise au syndicat et à l’assureur.", "Un rapport prêt à transmettre à votre courtier."),
+                 ("Rappel avant l’échéance de 5 ans.", "Vous n’avez pas à surveiller la date.")],
+    "why_h2": "Pourquoi passer par GNS Inspect",
+    "why": ["Une seule visite pour l’évaluation, le carnet d’entretien et l’étude du fonds de prévoyance.",
+            "Un relevé fait par des ingénieurs qui connaissent les coûts réels de construction et de réparation.",
+            "Un seul interlocuteur pour toutes les obligations de votre syndicat.",
+            "Prix fixe confirmé par écrit."],
+}
+FR_VALEUR_FAQ = [
+    ("Un ingénieur peut-il signer l’évaluation?", "Non. La loi réserve l’évaluation du coût de reconstruction aux membres de l’Ordre des évaluateurs agréés du Québec. Nos ingénieurs font le relevé technique; l’évaluateur agréé établit et signe la valeur."),
+    ("Quelle différence avec la valeur marchande ou l’évaluation municipale?", "Aucun rapport. La valeur de reconstruction est ce qu’il en coûterait pour rebâtir l’immeuble à neuf aujourd’hui, peu importe son prix sur le marché."),
+    ("Notre dernière évaluation date de 2021. Est-elle encore valide?", "Elle arrive à échéance cinq ans après sa date. Si elle date de 2021, elle doit être refaite en 2026."),
+    ("Les améliorations des copropriétaires sont-elles incluses?", "Non. Le syndicat assure l’immeuble selon la description des parties privatives; chaque copropriétaire assure ses propres améliorations."),
+]
+EN_VALEUR = {
+    "crumb": "Reconstruction value",
+    "eyebrow": "Condominiums · Syndicate insurance · Mandatory every 5 years",
+    "h1": "Reconstruction value appraisal of your condominium, for the syndicate’s insurance",
+    "lead": "Since April 15, 2021, the syndicate must have the building’s reconstruction cost appraised at least every 5 years, so the insured amount covers a full rebuild. We carry out the technical survey of the building and coordinate the appraisal with a chartered appraiser, who signs the report the law requires.",
+    "who_h2": "What the law requires",
+    "who": ["Every divided co-ownership syndicate must insure the building for its reconstruction value.",
+            "The reconstruction-cost appraisal must be made by a member of the Ordre des évaluateurs agréés du Québec.",
+            "It must be redone at least every 5 years.",
+            "The syndicate must also keep a description of the private portions (reference unit) and a self-insurance fund to pay deductibles."],
+    "callout": "<b>An appraisal that is too low is expensive on the day of a loss.</b> If the insured amount is below the real rebuilding cost, the gap falls on the co-owners. With construction costs up sharply, an appraisal more than 5 years old is almost always out of date.",
+    "includes_h2": "Our process",
+    "includes": [("Document review.", "Declaration of co-ownership, drawings, current insurance policy and last appraisal."),
+                 ("Technical survey by our engineers.", "Areas, construction systems, envelope, mechanical, electrical, elevators, parking and exterior works."),
+                 ("Common and private portions.", "Separating what the syndicate must insure from improvements made by co-owners."),
+                 ("Appraisal by a chartered appraiser.", "New reconstruction cost including demolition, debris removal and professional fees; report signed by the member of the Order."),
+                 ("Delivery to the syndicate and insurer.", "A report ready to send to your broker."),
+                 ("Reminder before the 5-year deadline.", "You don’t have to watch the date.")],
+    "why_h2": "Why go through GNS Inspect",
+    "why": ["One visit for the appraisal, the maintenance log and the reserve fund study.",
+            "A survey by engineers who know real construction and repair costs.",
+            "One point of contact for all your syndicate’s obligations.",
+            "Fixed price confirmed in writing."],
+}
+EN_VALEUR_FAQ = [
+    ("Can an engineer sign the appraisal?", "No. The law reserves the reconstruction-cost appraisal for members of the Ordre des évaluateurs agréés du Québec. Our engineers do the technical survey; the chartered appraiser establishes and signs the value."),
+    ("How does this differ from market value or the municipal assessment?", "They are unrelated. Reconstruction value is what it would cost to rebuild the building new today, whatever its market price."),
+    ("Our last appraisal dates from 2021. Is it still valid?", "It expires five years after its date. If it dates from 2021, it must be redone in 2026."),
+    ("Are co-owners’ improvements included?", "No. The syndicate insures the building according to the description of the private portions; each co-owner insures their own improvements."),
+]
+FR_CHARGES = {
+    "crumb": "Étude des charges communes",
+    "eyebrow": "Copropriété · Budget et répartition des frais",
+    "h1": "Étude des charges communes : savoir ce que coûte vraiment votre immeuble, et qui doit payer quoi",
+    "lead": "Des frais de condo qui grimpent sans explication, des cotisations spéciales à répétition, des copropriétaires qui contestent la facture : une étude des charges communes remet les chiffres à plat. Nos ingénieurs analysent vos dépenses d’exploitation, d’entretien et d’énergie, et vous disent où va l’argent et où il se perd.",
+    "who_h2": "Quand la demander",
+    "who": ["Avant d’adopter un budget qui prévoit une hausse importante des charges.",
+            "Après l’étude du fonds de prévoyance, pour arrimer le budget courant aux cotisations au fonds.",
+            "Quand certaines dépenses profitent à une partie seulement des copropriétaires (stationnement, ascenseur, toit-terrasse, parties communes à usage restreint).",
+            "Lors d’un changement de gestionnaire ou à la fin de l’administration du promoteur."],
+    "callout": "<b>L’énergie est souvent le premier poste à corriger.</b> Chauffage des espaces communs, ventilation du garage, eau chaude centrale : nous chiffrons les économies possibles et vérifions les appuis financiers disponibles pour les réaliser.",
+    "includes_h2": "Ce que comprend l’étude",
+    "includes": [("Analyse des dépenses.", "Trois à cinq ans d’états financiers et de factures, poste par poste."),
+                 ("Comparaison.", "Vos coûts par unité et par mètre carré comparés à ceux d’immeubles semblables."),
+                 ("Contrats d’entretien.", "Ascenseurs, mécanique, déneigement, entretien ménager : ce qui est payé, ce qui est réellement fait."),
+                 ("Consommation d’énergie et d’eau.", "Profil de consommation des parties communes et pistes d’économie chiffrées."),
+                 ("Répartition des dépenses.", "Identification des dépenses liées aux parties communes à usage restreint, à répartir selon la déclaration de copropriété."),
+                 ("Budget recommandé.", "Un budget d’exploitation réaliste, arrimé au carnet d’entretien et au fonds de prévoyance.")],
+    "why_h2": "Pourquoi GNS Inspect",
+    "why": ["Des ingénieurs qui connaissent les systèmes derrière les factures.",
+            "Une analyse indépendante : nous ne vendons ni contrats d’entretien ni services de gestion.",
+            "Un rapport que le conseil peut présenter tel quel à l’assemblée.",
+            "Prix fixe confirmé par écrit."],
+}
+FR_CHARGES_FAQ = [
+    ("L’étude peut-elle modifier la répartition des charges entre copropriétaires?", "Non. La répartition découle de la valeur relative des fractions inscrite dans la déclaration de copropriété; la modifier relève d’un notaire et d’un vote de l’assemblée. L’étude indique ce qui devrait être imputé à qui selon la déclaration existante."),
+    ("Est-ce obligatoire?", "Non. C’est un outil de gestion, contrairement au carnet d’entretien et à l’étude du fonds de prévoyance, qui sont exigés par la loi."),
+    ("Quelle différence avec l’étude du fonds de prévoyance?", "Le fonds de prévoyance paie les réparations majeures et les remplacements. Les charges communes paient l’exploitation courante. Les deux études se complètent."),
+    ("Combien de temps faut-il?", "Trois à six semaines, selon la qualité des documents comptables."),
+]
+EN_CHARGES = {
+    "crumb": "Common-expense study",
+    "eyebrow": "Condominiums · Budget and cost allocation",
+    "h1": "Common-expense study: know what your building really costs, and who should pay for what",
+    "lead": "Condo fees that climb without explanation, repeated special assessments, co-owners disputing the bill: a common-expense study lays the numbers out. Our engineers analyse your operating, maintenance and energy spending and tell you where the money goes and where it is lost.",
+    "who_h2": "When to ask for one",
+    "who": ["Before adopting a budget with a significant increase in fees.",
+            "After the reserve fund study, to align the operating budget with fund contributions.",
+            "When some expenses benefit only part of the co-owners (parking, elevator, roof terrace, common portions for restricted use).",
+            "At a change of manager or at the end of the developer’s administration."],
+    "callout": "<b>Energy is often the first line to fix.</b> Heating of common areas, garage ventilation, central hot water: we cost the possible savings and check the financial assistance available to achieve them.",
+    "includes_h2": "What the study includes",
+    "includes": [("Expense analysis.", "Three to five years of financial statements and invoices, line by line."),
+                 ("Comparison.", "Your costs per unit and per square metre against similar buildings."),
+                 ("Maintenance contracts.", "Elevators, mechanical, snow removal, cleaning: what is paid for, what is actually done."),
+                 ("Energy and water use.", "Consumption profile of the common portions and costed savings."),
+                 ("Expense allocation.", "Identifying expenses tied to common portions for restricted use, to be allocated per the declaration of co-ownership."),
+                 ("Recommended budget.", "A realistic operating budget, aligned with the maintenance log and the reserve fund.")],
+    "why_h2": "Why GNS Inspect",
+    "why": ["Engineers who know the systems behind the invoices.",
+            "An independent analysis: we sell neither maintenance contracts nor management services.",
+            "A report the board can present to the assembly as is.",
+            "Fixed price confirmed in writing."],
+}
+EN_CHARGES_FAQ = [
+    ("Can the study change how fees are split among co-owners?", "No. The split follows the relative value of the fractions set in the declaration of co-ownership; changing it takes a notary and a vote of the assembly. The study shows what should be charged to whom under the existing declaration."),
+    ("Is it mandatory?", "No. It is a management tool, unlike the maintenance log and the reserve fund study, which the law requires."),
+    ("How does it differ from the reserve fund study?", "The reserve fund pays for major repairs and replacements. Common expenses pay for day-to-day operation. The two studies complement each other."),
+    ("How long does it take?", "Three to six weeks, depending on the quality of the accounting records."),
+]
+
 # ------------------------------------------------------------------ pages
 PAGES = [
     {"key": "merci", "lang": "fr", "type": "thanks", "noindex": True,
@@ -691,6 +815,23 @@ PAGES = [
      "title": "Condominium Maintenance Log (Bill 16) | GNS Inspect",
      "meta": "Condominium maintenance log prepared by engineers: inventory, component condition and 25-year schedule. Mandatory for every syndicate by August 2028.",
      "service_name": "Condominium maintenance log (Bill 16)", "faq": EN_CARNET_FAQ, "content": EN_CARNET},
+
+    {"key": "valeur", "lang": "fr", "type": "service",
+     "title": "Valeur de reconstruction de copropriété pour l’assurance | GNS Inspect",
+     "meta": "Évaluation du coût de reconstruction de votre copropriété, obligatoire tous les 5 ans : relevé technique par des ingénieurs et rapport signé par un évaluateur agréé.",
+     "service_name": "Évaluation de la valeur de reconstruction (copropriété)", "faq": FR_VALEUR_FAQ, "content": FR_VALEUR},
+    {"key": "valeur", "lang": "en", "type": "service",
+     "title": "Condominium Reconstruction Value Appraisal | GNS Inspect",
+     "meta": "Reconstruction-cost appraisal of your condominium, mandatory every 5 years: technical survey by engineers and a report signed by a chartered appraiser.",
+     "service_name": "Reconstruction value appraisal (condominium)", "faq": EN_VALEUR_FAQ, "content": EN_VALEUR},
+    {"key": "charges", "lang": "fr", "type": "service",
+     "title": "Étude des charges communes de copropriété | GNS Inspect",
+     "meta": "Étude des charges communes : analyse des dépenses, des contrats d’entretien et de l’énergie de votre copropriété par des ingénieurs, avec un budget recommandé.",
+     "service_name": "Étude des charges communes (copropriété)", "faq": FR_CHARGES_FAQ, "content": FR_CHARGES},
+    {"key": "charges", "lang": "en", "type": "service",
+     "title": "Condominium Common-Expense Study | GNS Inspect",
+     "meta": "Common-expense study: engineers analyse your condominium’s spending, maintenance contracts and energy use, and recommend a budget.",
+     "service_name": "Common-expense study (condominium)", "faq": EN_CHARGES_FAQ, "content": EN_CHARGES},
 
     {"key": "services", "lang": "fr", "type": "hub",
      "title": "Services d’ingénierie du bâtiment à Montréal | GNS Inspect",
