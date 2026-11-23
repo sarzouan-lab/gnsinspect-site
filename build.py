@@ -30,6 +30,8 @@ SLUGS = {
     ("contact", "fr"): "contact", ("contact", "en"): "contact",
     ("merci", "fr"): "merci", ("merci", "en"): "thank-you",
     ("analyse", "fr"): "analyse-energetique-hydro-quebec", ("analyse", "en"): "energy-analysis-hydro-quebec",
+    ("fonds", "fr"): "etude-fonds-de-prevoyance-loi-16", ("fonds", "en"): "reserve-fund-study-bill-16",
+    ("carnet", "fr"): "carnet-entretien-copropriete-loi-16", ("carnet", "en"): "condominium-maintenance-log-bill-16",
     ("mli", "fr"): "audit-energetique-aph-select-schl", ("mli", "en"): "energy-audit-mli-select-cmhc",
     ("divulgation", "fr"): "divulgation-energie-ges-montreal-reglement-21-042", ("divulgation", "en"): "montreal-energy-ghg-disclosure-bylaw-21-042",
 }
@@ -106,6 +108,7 @@ def header(p):
     nav = [
         ("facades", t(lang, "Façades", "Façades")),
         ("stationnements", t(lang, "Stationnements", "Parking garages")),
+        ("copropriete", t(lang, "Copropriété", "Condos")),
         ("energie", t(lang, "Énergie", "Energy")),
         ("tests", t(lang, "Tests", "Testing")),
         ("services", t(lang, "Services", "Services")),
@@ -142,6 +145,8 @@ def quote_form(p, compact=False):
       <option value="les-deux">{t(lang,'Les deux','Both')}</option>
       {''.join(f'<option value="{c["key"]}"{" selected" if c["key"] == p["key"] else ""}>{c[lang]["title"]}</option>' for c in CATEGORIES)}
       <option value="analyse-energetique"{' selected' if p['key'] == 'analyse' else ''}>{t(lang,'Analyse énergétique (Hydro-Québec)','Energy analysis (Hydro-Québec)')}</option>
+      <option value="fonds-prevoyance"{' selected' if p['key'] == 'fonds' else ''}>{t(lang,'Étude du fonds de prévoyance (Loi 16)','Reserve fund study (Bill 16)')}</option>
+      <option value="carnet-entretien"{' selected' if p['key'] == 'carnet' else ''}>{t(lang,'Carnet d’entretien (Loi 16)','Maintenance log (Bill 16)')}</option>
       <option value="aph-select"{' selected' if p['key'] == 'mli' else ''}>{t(lang,'Audit énergétique APH Select (SCHL)','MLI Select energy audit (CMHC)')}</option>
       <option value="divulgation-21-042"{' selected' if p['key'] == 'divulgation' else ''}>{t(lang,'Divulgation énergie et GES (Montréal)','Energy and GHG disclosure (Montréal)')}</option>
       <option value="autre">{t(lang,'Autre / je ne sais pas','Other / not sure')}</option>
@@ -260,10 +265,22 @@ HERO_SLIDES = [
      ("Analyse énergétique de votre bâtiment, remboursée jusqu’à 60 000 $", "An energy analysis of your building, reimbursed up to $60,000"),
      ("Votre bâtiment consomme 1 GWh ou plus par année? Hydro-Québec rembourse l’analyse réalisée par nos ingénieurs. Nous préparons la demande, faisons l’analyse et vous accompagnons jusqu’aux mesures.", "Does your building use 1 GWh or more a year? Hydro-Québec reimburses the analysis carried out by our engineers. We prepare the application, do the analysis and stay with you through the measures."),
      ("Voir si vous êtes admissible", "Check your eligibility")),
+    ("facades", ("Loi 122 · Bâtiments de 5 étages et plus", "Bill 122 · Buildings of 5+ storeys"),
+     ("Inspection de façades : votre rapport quinquennal, signé par un ingénieur", "Façade inspection: your five-year report, signed by an engineer"),
+     ("Inspection visuelle et rapprochée par nacelle, cordiste ou drone, classification des conditions dangereuses, échéancier et budget de travaux. Rapport livré en 10 jours ouvrables.", "Visual and close-up inspection by lift, rope access or drone, dangerous-condition classification, work schedule and budget. Report delivered in 10 business days."),
+     ("Voir l’inspection de façades", "See façade inspection")),
     ("tests", ("Tests et analyses en laboratoire", "Testing and laboratory analysis"),
      ("Moisissures, radon, amiante : des tests indépendants, un rapport d’ingénieur", "Mould, radon, asbestos: independent testing, an engineer’s report"),
      ("Nous prélevons, faisons analyser en laboratoire et expliquons les résultats, leur cause et les correctifs. Nous ne vendons aucun travail de décontamination.", "We sample, have it analysed in a laboratory and explain the results, their cause and the fix. We sell no decontamination work."),
      ("Voir les tests offerts", "See our testing services")),
+    ("stationnements", ("Loi 122 · Stationnements étagés", "Bill 122 · Multi-level parking"),
+     ("Inspection de stationnement : vérifications annuelle et quinquennale", "Parking garage inspection: annual and five-year verifications"),
+     ("Sondages, délaminage, corrosion et chlorures, plan de localisation des défauts et priorités de réparation, sans fermer votre stationnement.", "Sounding, delamination, corrosion and chloride testing, a defect map and repair priorities, without closing your garage."),
+     ("Voir l’inspection de stationnements", "See parking inspection")),
+    ("copropriete", ("Copropriété · Loi 16 · Échéance août 2028", "Condominiums · Bill 16 · August 2028 deadline"),
+     ("Carnet d’entretien et étude du fonds de prévoyance pour votre syndicat", "Maintenance log and reserve fund study for your syndicate"),
+     ("Tous les syndicats doivent maintenant les obtenir d’un professionnel. Nos ingénieurs produisent les deux à partir d’une même inspection, avec vos obligations Loi 122 intégrées.", "Every syndicate must now obtain them from a professional. Our engineers produce both from a single inspection, with your Bill 122 obligations built in."),
+     ("Voir les services aux copropriétés", "See condominium services")),
     ("mli", ("SCHL · APH Select · Immeubles multilogements", "CMHC · MLI Select · Multi-unit buildings"),
      ("Audit énergétique APH Select pour votre financement SCHL", "MLI Select energy audit for your CMHC financing"),
      ("Inspection, modélisation et rapport d’audit signé par un ingénieur : les points d’efficacité énergétique qui donnent accès aux primes réduites et à l’amortissement prolongé.", "Inspection, modelling and an engineer-signed audit report: the energy-efficiency points that unlock reduced premiums and longer amortization."),
@@ -380,13 +397,13 @@ def render_service(p):
     <h2>{c['includes_h2']}</h2><ol class="steps">{incl}</ol>
     <h2>{c['why_h2']}</h2><ul class="checks">{why}</ul>
     {cred(lang)}
-    {energy_pointer(lang, p['key']) if p['key'] in ('analyse','mli','divulgation') else ''}
+    {group_pointer(lang, GROUP_OF[p['key']], p['key'], 'grid-2' if GROUP_OF[p['key']] == 'energie' else None) if p['key'] in GROUP_OF else ''}
     <h2>{t(lang,'Questions fréquentes','Frequently asked questions')}</h2>
     <div class="faq">{faq}</div>
   </div>
   <aside class="sticky">{quote_form(p)}</aside>
 </div></section>
-{cta_band(lang, {'analyse': t(lang,'Votre bâtiment consomme 1 GWh ou plus par année?','Does your building use 1 GWh or more a year?'), 'mli': t(lang,'Un dossier APH Select à monter?','An MLI Select file to assemble?'), 'divulgation': t(lang,'Votre divulgation est due le 30 juin.','Your disclosure is due June 30.')}.get(p['key']))}"""
+{cta_band(lang, {'analyse': t(lang,'Votre bâtiment consomme 1 GWh ou plus par année?','Does your building use 1 GWh or more a year?'), 'mli': t(lang,'Un dossier APH Select à monter?','An MLI Select file to assemble?'), 'divulgation': t(lang,'Votre divulgation est due le 30 juin.','Your disclosure is due June 30.'), 'fonds': t(lang,'Votre étude du fonds de prévoyance est due d’ici août 2028.','Your reserve fund study is due by August 2028.'), 'carnet': t(lang,'Votre carnet d’entretien est dû d’ici août 2028.','Your maintenance log is due by August 2028.')}.get(p['key']))}"""
 
 def render_simple(p):
     lang, c = p["lang"], p["content"]
@@ -436,6 +453,10 @@ def render_hub(p):
   <span class="eyebrow">{t(lang,'Énergie et financement','Energy and financing')}</span>
   {energy_pointer(lang, cls='grid-3')}
 </div></section>
+<section><div class="wrap" style="margin-top:-40px">
+  <span class="eyebrow">{t(lang,'Syndicats de copropriété · Loi 16','Condominium syndicates · Bill 16')}</span>
+  {group_pointer(lang, 'copropriete', cls='grid-2')}
+</div></section>
 <section class="soft"><div class="wrap">
   <span class="eyebrow">{t(lang,'Services d’ingénierie','Engineering services')}</span>
   <h2>{t(lang, f'{len(CATEGORIES)} domaines, une équipe', f'{len(CATEGORIES)} practice areas, one team')}</h2>
@@ -451,10 +472,24 @@ ENERGY = [
     ("divulgation", "Divulgation annuelle énergie et GES", "Annual energy and GHG disclosure", "Règlement 21-042 de Montréal : dépôt avant le 30 juin.", "Montréal By-law 21-042: filing before June 30."),
 ]
 
-def energy_pointer(lang, skip=None, cls=None):
+CONDO = [
+    ("fonds", "Étude du fonds de prévoyance", "Reserve fund study", "Projection sur 25 ans et scénarios de cotisation. Échéance août 2028.", "25-year projection and contribution scenarios. August 2028 deadline."),
+    ("carnet", "Carnet d’entretien", "Maintenance log", "Inventaire, état des composantes et calendrier de 25 ans.", "Inventory, component condition and 25-year schedule."),
+    ("facades", "Inspection de façades (Loi 122)", "Façade inspection (Bill 122)", "Immeubles de 5 étages et plus, tous les 5 ans.", "Buildings of 5+ storeys, every 5 years."),
+    ("stationnements", "Inspection de stationnement (Loi 122)", "Parking garage inspection (Bill 122)", "Vérification annuelle et approfondie quinquennale.", "Annual check and five-year in-depth verification."),
+]
+GROUPS = {"energie": (ENERGY, "Nos services en énergie", "Our energy services"),
+          "copropriete": (CONDO, "Nos services aux copropriétés", "Our condominium services")}
+GROUP_OF = {k: g for g, (items, _f, _e) in GROUPS.items() for k, *_ in items if k not in ("facades", "stationnements")}
+
+def group_pointer(lang, group, skip=None, cls=None):
+    items, hfr, hen = GROUPS[group]
     cards = "".join(f"""<div class="service"><h3>{t(lang, fr, en)}</h3><p>{t(lang, dfr, den)}</p><a class="btn ghost" href="{url(lang, k)}">{t(lang,'Voir le service','See service')}</a></div>"""
-                    for k, fr, en, dfr, den in ENERGY if k != skip)
-    return f"""<h2>{t(lang,'Nos services en énergie','Our energy services')}</h2><div class="{cls or ('rows' if skip is None else 'grid-2')} lead-cards" style="margin:18px 0 28px">{cards}</div>"""
+                    for k, fr, en, dfr, den in items if k != skip)
+    return f"""<h2>{t(lang, hfr, hen)}</h2><div class="{cls or 'rows'} lead-cards" style="margin:18px 0 28px">{cards}</div>"""
+
+def energy_pointer(lang, skip=None, cls=None):
+    return group_pointer(lang, "energie", skip, cls or ('rows' if skip is None else 'grid-2'))
 
 def render_category(p):
     lang, c = p["lang"], p["content"]
@@ -469,7 +504,7 @@ def render_category(p):
 </div></section>
 <section><div class="wrap two-col">
   <div class="prose">
-    {energy_pointer(lang) if p["key"] == "energie" else ""}
+    {group_pointer(lang, p["key"]) if p["key"] in GROUPS else ""}
     <h2>{t(lang,'Pour qui','Who it is for')}</h2><ul class="checks">{who}</ul>
     <h2>{t(lang,'Nos services','Our services')}</h2><ol class="steps">{items}</ol>
     {cred(lang)}
@@ -477,7 +512,7 @@ def render_category(p):
   </div>
   <aside class="sticky">{quote_form(p)}</aside>
 </div></section>
-{cta_band(lang, t(lang,'Un projet en efficacité énergétique?','An energy-efficiency project?') if p['key'] == 'energie' else None)}"""
+{cta_band(lang, {'energie': t(lang,'Un projet en efficacité énergétique?','An energy-efficiency project?'), 'copropriete': t(lang,'Carnet d’entretien et fonds de prévoyance : échéance août 2028.','Maintenance log and reserve fund study: August 2028 deadline.')}.get(p['key']))}"""
 
 def render_thanks(p):
     lang, c = p["lang"], p["content"]

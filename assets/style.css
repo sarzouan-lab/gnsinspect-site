@@ -169,3 +169,7 @@ a.strip:hover { background: var(--yellow-dark); }
 .hero-dots button.on { background: var(--yellow); }
 .hero-dots button:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
 @media (prefers-reduced-motion: reduce) { .hero-slides .slide { transition: none; } }
+.brand { white-space: nowrap; flex: none; }
+nav.main { gap: 18px; }
+@media (max-width: 1240px) { header.site .btn { padding: 10px 14px; font-size: .92rem; } nav.main { gap: 14px; } nav.main a { font-size: .9rem; } }
+@media (max-width: 1060px) and (min-width: 901px) { header.site .btn { display: none; } }
