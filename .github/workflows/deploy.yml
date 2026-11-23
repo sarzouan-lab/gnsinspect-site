@@ -30,6 +30,16 @@ jobs:
           python3 build.py
           test -f dist/index.html && test -f dist/en/index.html && test -f dist/sitemap.xml
           ! grep -q 'content="noindex"' dist/index.html
+      - name: Connection diagnostics
+        if: steps.cfg.outputs.ready == 'true'
+        run: |
+          case "$FTP_SERVER" in *://*|*/*|*" "*) echo "FTP_SERVER has a prefix, slash or space - it must be a bare host name";; *) echo "FTP_SERVER format ok";; esac
+          echo "resolves to $(getent hosts "$FTP_SERVER" | wc -l) address(es)"
+          [ "$(getent hosts "$FTP_SERVER" | awk '{print $1}' | head -1)" = "209.42.24.221" ] && echo "same IP as the website" || echo "different IP from the website (or none)"
+          for port in 21 990 22 2222; do
+            if timeout 8 bash -c "exec 3<>/dev/tcp/$FTP_SERVER/$port" 2>/dev/null; then echo "port $port open"; else echo "port $port closed or filtered"; fi
+          done
+          timeout 8 bash -c "exec 3<>/dev/tcp/209.42.24.221/21 && head -c 80 <&3" 2>/dev/null | tr -d '\r' || echo "website IP port 21: no banner"
       - name: Upload changed files to Doteasy
         if: steps.cfg.outputs.ready == 'true'
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
