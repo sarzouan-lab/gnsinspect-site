@@ -44,7 +44,8 @@ jobs:
         if: steps.cfg.outputs.ready == 'true'
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          server: ${{ secrets.FTP_SERVER }}
+          # The site's own host name: ftp.gnsinspect.ca does not point at the hosting server.
+          server: gnsinspect.ca
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
