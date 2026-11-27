@@ -316,7 +316,7 @@ FR_ANALYSE = {
             "Un seul interlocuteur, de la première facture analysée jusqu’au dernier versement."],
 }
 FR_ANALYSE_FAQ = [
-    ("Combien me coûte l’analyse?", "Hydro-Québec rembourse les coûts admissibles de l’analyse jusqu’à 50 000 $, ou 60 000 $ si elle couvre aussi la gestion de la demande de puissance. Vous recevez 40 % à l’acceptation du rapport et 60 % après avoir mis en œuvre au moins une mesure. Nous vous remettons un prix fixe avant de déposer la demande."),
+    ("Combien me coûte l’analyse?", "Hydro-Québec rembourse les coûts admissibles de l’analyse jusqu’à un plafond qui dépend de la consommation du bâtiment. De 1 à 2 GWh par année : jusqu’à 20 000 $, ou 24 000 $ si l’analyse couvre aussi la gestion de la demande de puissance. Plus de 2 GWh : jusqu’à 50 000 $, ou 60 000 $. Vous recevez 40 % à l’acceptation du rapport et 60 % après avoir mis en œuvre au moins une mesure. Nous vous remettons un prix fixe avant de déposer la demande."),
     ("Qu’est-ce qu’un GWh par année?", "Un million de kWh. C’est typiquement un immeuble de bureaux ou industriel de bonne taille, un centre commercial, un entrepôt réfrigéré, un aréna ou une usine. Vos 12 dernières factures suffisent pour le vérifier."),
     ("Suis-je obligé de réaliser toutes les mesures recommandées?", "Non. Le second versement est déclenché par la mise en œuvre d’au moins une mesure conforme aux exigences du programme. Les autres restent à votre discrétion."),
     ("Mon bâtiment consomme moins de 1 GWh. Y a-t-il autre chose?", "Oui. Les volets Petites entreprises et Moyennes et grandes entreprises du programme offrent un appui financier pour les mesures elles-mêmes. Nous vérifions lequel s’applique."),
@@ -347,7 +347,7 @@ EN_ANALYSE = {
             "One point of contact, from the first bill reviewed to the last payment."],
 }
 EN_ANALYSE_FAQ = [
-    ("What does the analysis cost me?", "Hydro-Québec reimburses the eligible costs of the analysis up to $50,000, or $60,000 when it also covers demand response. You receive 40% when the report is accepted and 60% after implementing at least one measure. We give you a fixed price before filing the application."),
+    ("What does the analysis cost me?", "Hydro-Québec reimburses the eligible costs of the analysis up to a cap that depends on the building’s consumption. From 1 to 2 GWh a year: up to $20,000, or $24,000 when the analysis also covers demand response. Over 2 GWh: up to $50,000, or $60,000. You receive 40% when the report is accepted and 60% after implementing at least one measure. We give you a fixed price before filing the application."),
     ("What is 1 GWh per year?", "One million kWh. Typically a good-sized office or industrial building, a shopping centre, a cold-storage warehouse, an arena or a plant. Your last 12 bills are enough to check."),
     ("Do I have to implement every recommended measure?", "No. The second payment is triggered by implementing at least one measure that meets program requirements. The rest is at your discretion."),
     ("My building uses less than 1 GWh. Is there anything else?", "Yes. The program’s Small business and Medium and large business components provide financial assistance for the measures themselves. We check which one applies."),
