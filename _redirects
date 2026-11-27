@@ -1,0 +1,7 @@
+/our-services/* /services/ 301
+/our-services /services/ 301
+/contact-us/ /contact/ 301
+/about-us/ / 301
+/blog/* / 301
+/wp-content/* / 301
+/wp-admin/* / 301

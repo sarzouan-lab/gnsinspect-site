@@ -1,0 +1,16 @@
+DirectoryIndex index.html
+RedirectMatch 301 ^/(wp-[^/]*\.php|xmlrpc\.php|index\.php)$ /
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+Redirect 301 /our-services/ /services/
+Redirect 301 /contact-us/ /contact/
+Redirect 301 /about-us/ /
+RedirectMatch 301 ^/blog/.*$ /
+RedirectMatch 301 ^/wp-(content|admin|includes)/.*$ /
+ErrorDocument 404 /index.html
+<IfModule mod_expires.c>
+ExpiresActive On
+ExpiresByType image/png "access plus 1 year"
+ExpiresByType text/css "access plus 1 month"
+</IfModule>
